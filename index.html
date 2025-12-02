@@ -1,152 +1,692 @@
-<header class="fixed top-0 w-full z-40 bg-milk-base/95 backdrop-blur-sm px-6 py-4 shadow-sm">
-    <div class="flex justify-between items-center">
-        <div>
-            <h1 class="text-xl font-bold text-coffee-text tracking-wide">大阪四人遊🍁</h1>
-            <p class="text-xs text-latte-primary font-medium">Dec 9 - Dec 14, 2025</p>
-        </div>
-        <div class="w-10 h-10 rounded-full bg-latte-light flex items-center justify-center text-coffee-text shadow-sm">
-            <i class="fa-solid fa-dog text-lg"></i>
-        </div>
-    </div>
-</header>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>大阪四人遊🍁</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'milk-base': '#fdfbf7',   // 米白底色
+                        'milk-card': '#ffffff',   // 卡片白
+                        'coffee-text': '#4a3b32', // 深咖啡字
+                        'latte-primary': '#b08d79', // 拿鐵主色
+                        'latte-light': '#e6dcd3',   // 淺拿鐵
+                        'rose-accent': '#f43f5e'
+                    }
+                }
+            }
+        }
+    </script>
 
-<main class="container mx-auto px-4 mt-24 max-w-md">
-
-    <div id="page-itinerary" class="page-section active">
+    <style>
+        /* 隱藏捲軸但保留功能 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
         
-        <div class="flex overflow-x-auto no-scrollbar gap-2 mb-4 pb-2 sticky top-[72px] z-30 bg-milk-base/95 py-2">
-            <button onclick="filterItinerary('all')" class="filter-btn active whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold bg-latte-light text-coffee-text">全部</button>
-            <button onclick="filterItinerary('day-1')" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold bg-latte-light text-coffee-text">12/9 第一天</button>
-            <button onclick="filterItinerary('day-2')" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold bg-latte-light text-coffee-text">12/10 第二天</button>
-            <button onclick="filterItinerary('day-3')" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold bg-latte-light text-coffee-text">12/11 第三天</button>
-            <button onclick="filterItinerary('day-4')" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold bg-latte-light text-coffee-text">12/12 第四天</button>
-            <button onclick="filterItinerary('day-5')" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold bg-latte-light text-coffee-text">12/13 第五天</button>
-            <button onclick="filterItinerary('day-6')" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold bg-latte-light text-coffee-text">12/14 第六天</button>
-        </div>
+        /* 玻璃擬態導航列 */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
 
-        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-xl shadow-sm mb-6">
-            <div class="flex items-center mb-2">
-                <i class="fa-solid fa-circle-exclamation text-yellow-500 mr-2"></i>
-                <h3 class="font-bold text-sm text-yellow-800">必做：JR 指定席劃位</h3>
+        /* iOS 底部安全距離 */
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        body {
+            background-color: #fdfbf7; /* 預設背景色 */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        /* 時間軸樣式 */
+        .timeline-line {
+            position: absolute;
+            left: 7px;
+            top: 10px;
+            bottom: 0;
+            width: 2px;
+            background-color: #e6dcd3;
+            z-index: 0;
+        }
+        .timeline-node {
+            position: absolute;
+            left: -20px;
+            top: 5px;
+            z-index: 10;
+        }
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #e6dcd3;
+            border: 3px solid #ffffff;
+        }
+        .timeline-dot.highlight {
+            background-color: #b08d79;
+            transform: scale(1.2);
+        }
+        .timeline-dot.transport {
+            background-color: #9ca3af;
+        }
+        .transport-box {
+            background-color: #f3f4f6;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: #4b5563;
+            display: inline-block;
+        }
+        .transport-box.reserve {
+            background-color: #fff1f2; /* 淺粉紅 */
+            border: 1px solid #fecdd3;
+        }
+
+        /* 頁面切換控制 */
+        .page-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .page-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-coffee-text pb-20">
+
+    <header class="fixed top-0 w-full z-40 bg-milk-base/95 backdrop-blur-sm px-6 py-4 shadow-sm border-b border-latte-light/20">
+        <div class="flex justify-between items-center max-w-md mx-auto">
+            <div>
+                <h1 class="text-xl font-bold text-coffee-text tracking-wide">大阪四人遊🍁</h1>
+                <p class="text-xs text-latte-primary font-medium">Dec 9 - Dec 14, 2025</p>
             </div>
-            <div class="text-xs text-yellow-800 space-y-1 pl-6">
-                <p class="font-bold">建議於 12/9 抵達機場時一次劃好：</p>
-                <ul class="list-disc list-outside ml-3 space-y-1">
-                    <li><strong>12/12 去程 08:14</strong> 大阪→福知山 (特急 Kounotori)</li>
-                    <li><strong>12/12 去程 09:59</strong> 福知山→天橋立 (特急 Hashidate)</li>
-                    <li><strong>12/12 回程 18:09</strong> 天橋立→京都 (特急 Hashidate)</li>
-                    <li><strong>12/12 回程 20:30</strong> 京都→天王寺 (特急 Haruka)</li>
-                    <li><strong>12/14 回程</strong> 難波→機場 (Haruka)</li>
-                </ul>
+            <div class="w-10 h-10 rounded-full bg-latte-light flex items-center justify-center text-coffee-text shadow-sm">
+                <i class="fa-solid fa-dog text-lg"></i>
             </div>
         </div>
+    </header>
 
-        <div id="day-1" class="day-container mb-8">
-            <div class="flex items-center mb-4">
-                <span class="bg-coffee-text text-white text-xs font-bold px-2 py-1 rounded mr-2">DAY 1</span>
-                <span class="text-base font-bold text-coffee-text">12/9 (二) 抵達與逛街</span>
+    <main class="container mx-auto px-4 mt-24 max-w-md">
+
+        <div id="page-itinerary" class="page-section active">
+            
+            <div class="flex overflow-x-auto no-scrollbar gap-2 mb-4 pb-2 sticky top-[72px] z-30 bg-milk-base/95 py-2">
+                <button onclick="filterItinerary('all')" class="filter-btn active whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold bg-latte-light text-coffee-text shadow-sm">全部</button>
+                <button onclick="filterItinerary('day-1')" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold bg-latte-light text-coffee-text shadow-sm">12/9 第一天</button>
+                <button onclick="filterItinerary('day-2')" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold bg-latte-light text-coffee-text shadow-sm">12/10 第二天</button>
+                <button onclick="filterItinerary('day-3')" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold bg-latte-light text-coffee-text shadow-sm">12/11 第三天</button>
+                <button onclick="filterItinerary('day-4')" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold bg-latte-light text-coffee-text shadow-sm">12/12 第四天</button>
+                <button onclick="filterItinerary('day-5')" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold bg-latte-light text-coffee-text shadow-sm">12/13 第五天</button>
+                <button onclick="filterItinerary('day-6')" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold bg-latte-light text-coffee-text shadow-sm">12/14 第六天</button>
             </div>
-            <div class="bg-milk-card rounded-2xl p-5 shadow-sm border border-latte-light/30">
-                <div class="timeline-wrapper">
-                    <div class="timeline-line"></div>
-                    
-                    <div class="relative mb-6">
-                        <div class="timeline-node"><div class="timeline-dot highlight"></div></div>
-                        <div>
-                            <p class="text-sm font-bold text-latte-primary">09:55</p>
-                            <p class="font-bold text-coffee-text text-lg">抵達關西 KIX</p>
-                            <p class="text-xs text-gray-400">BR178 (06:30 TPE 起飛)</p>
+
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-xl shadow-sm mb-6">
+                <div class="flex items-center mb-2">
+                    <i class="fa-solid fa-circle-exclamation text-yellow-500 mr-2"></i>
+                    <h3 class="font-bold text-sm text-yellow-800">必做：JR 指定席劃位</h3>
+                </div>
+                <div class="text-xs text-yellow-800 space-y-1 pl-6">
+                    <p class="font-bold">建議於 12/9 抵達機場時一次劃好：</p>
+                    <ul class="list-disc list-outside ml-3 space-y-1">
+                        <li><strong>12/12 去程 08:14</strong> 大阪→福知山 (特急 Kounotori)</li>
+                        <li><strong>12/12 去程 09:59</strong> 福知山→天橋立 (特急 Hashidate)</li>
+                        <li><strong>12/12 回程 18:09</strong> 天橋立→京都 (特急 Hashidate)</li>
+                        <li><strong>12/12 回程 20:30</strong> 京都→天王寺 (特急 Haruka)</li>
+                        <li><strong>12/14 回程</strong> 難波→機場 (Haruka)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="day-1" class="day-container mb-8">
+                <div class="flex items-center mb-4">
+                    <span class="bg-coffee-text text-white text-xs font-bold px-2 py-1 rounded mr-2">DAY 1</span>
+                    <span class="text-base font-bold text-coffee-text">12/9 (二) 抵達與逛街</span>
+                </div>
+                <div class="bg-milk-card rounded-2xl p-5 shadow-sm border border-latte-light/30">
+                    <div class="timeline-wrapper relative ml-4">
+                        <div class="timeline-line"></div>
+                        
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot highlight"></div></div>
+                            <div>
+                                <p class="text-sm font-bold text-latte-primary">09:55</p>
+                                <p class="font-bold text-coffee-text text-lg">抵達關西 KIX</p>
+                                <p class="text-xs text-gray-400">BR178 (06:30 TPE 起飛)</p>
+                            </div>
+                        </div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot transport"></div></div>
+                            <div class="transport-box">
+                                <i class="fa-solid fa-train mr-2"></i>南海電鐵 → 難波站
+                            </div>
+                        </div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot"></div></div>
+                            <p class="text-sm font-bold text-latte-primary">Check-in</p>
+                            <a href="https://maps.google.com/?q=Hotel+Abitare+Namba+West" target="_blank" class="font-bold text-coffee-text text-lg underline decoration-latte-primary/30">Hotel Abitare Namba West</a>
+                            <p class="text-xs text-gray-400">先放行李</p>
+                        </div>
+
+                         <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot highlight"></div></div>
+                            <p class="text-sm font-bold text-rose-500">13:00 (預約)</p>
+                            <a href="https://maps.google.com/?q=LIM+Osaka+Hair" target="_blank" class="font-bold text-coffee-text text-lg underline decoration-rose-300">LIM 染髮</a>
+                            <p class="text-xs text-rose-400">請準時抵達</p>
+                        </div>
+
+                         <div class="relative pl-4">
+                            <div class="timeline-node"><div class="timeline-dot"></div></div>
+                            <p class="text-sm font-bold text-latte-primary">晚上</p>
+                            <div class="flex gap-3">
+                                <a href="https://maps.google.com/?q=Namba" target="_blank" class="font-bold text-coffee-text underline decoration-latte-primary/30">難波</a>
+                                <a href="https://maps.google.com/?q=Shinsaibashi" target="_blank" class="font-bold text-coffee-text underline decoration-latte-primary/30">心齋橋</a>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <div class="relative mb-6">
-                        <div class="timeline-node"><div class="timeline-dot transport"></div></div>
-                        <div class="transport-box">
-                            <i class="fa-solid fa-train mr-2"></i>南海電鐵 → 難波站
+            <div id="day-2" class="day-container mb-8">
+                <div class="flex items-center mb-4">
+                    <span class="bg-coffee-text text-white text-xs font-bold px-2 py-1 rounded mr-2">DAY 2</span>
+                    <span class="text-base font-bold text-coffee-text">12/10 (三) 環球影城</span>
+                </div>
+                <div class="bg-milk-card rounded-2xl p-5 shadow-sm border border-latte-light/30">
+                     <div class="timeline-wrapper relative ml-4">
+                        <div class="timeline-line"></div>
+                        
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot transport"></div></div>
+                            <div class="transport-box">
+                                <i class="fa-solid fa-train mr-2"></i>櫻川 → 西九條 → 環球城
+                            </div>
+                        </div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot highlight"></div></div>
+                            <a href="https://maps.google.com/?q=USJ" target="_blank" class="font-bold text-coffee-text text-xl underline decoration-purple-300">USJ 大阪環球影城</a>
+                            <p class="text-xs text-purple-500 mt-1">快速通關：Race & Thrill</p>
+                        </div>
+
+                        <div class="relative mb-6 ml-2 bg-purple-50 border border-purple-100 rounded-xl p-4">
+                            <h4 class="font-bold text-purple-800 text-sm mb-2"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>攻略：逆時針 + 二刷任天堂</h4>
+                            <ol class="list-decimal list-inside text-xs text-purple-900 space-y-2">
+                                <li><strong>08:30 入園</strong>：直衝 <span class="font-bold">飛天翼龍</span> (趁人少)。</li>
+                                <li><strong>逆時針玩</strong>：往侏羅紀、大白鯊方向走。</li>
+                                <li><strong>12:50 (快速通關)</strong>：進入 <span class="font-bold">任天堂園區</span> (瑪利歐賽車)。</li>
+                                <li><strong>15:40 (快速通關)</strong>：進入 <span class="font-bold">哈利波特</span> (禁忌之旅)。</li>
+                                <li class="bg-white p-2 rounded border border-purple-200 text-red-500 font-bold">
+                                    Tips: 想要晚上二刷任天堂，入園請馬上抽「區域入場整理券」抽晚上的時段！
+                                </li>
+                                <li><strong>晚上</strong>：玩 <span class="font-bold">好萊塢美夢</span>。</li>
+                            </ol>
+                        </div>
+
+                        <div class="relative pl-4">
+                            <div class="timeline-node"><div class="timeline-dot"></div></div>
+                            <p class="text-sm font-bold text-latte-primary">晚餐</p>
+                            <a href="https://maps.google.com/?q=sazare+osaka" target="_blank" class="font-bold text-coffee-text text-lg underline decoration-latte-primary/30">sazare 大阪燒</a>
+                        </div>
+                     </div>
+                </div>
+            </div>
+
+            <div id="day-3" class="day-container mb-8">
+                <div class="flex items-center mb-4">
+                    <span class="bg-coffee-text text-white text-xs font-bold px-2 py-1 rounded mr-2">DAY 3</span>
+                    <span class="text-base font-bold text-coffee-text">12/11 (四) 箕面勝運</span>
+                </div>
+                <div class="bg-milk-card rounded-2xl p-5 shadow-sm border border-latte-light/30">
+                    <div class="timeline-wrapper relative ml-4">
+                        <div class="timeline-line"></div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot transport"></div></div>
+                            <div class="transport-box">
+                                <div class="mb-1"><i class="fa-solid fa-train mr-2"></i>難波 → 箕面萱野</div>
+                                <div><i class="fa-solid fa-taxi mr-2"></i>轉計程車 (¥3500) → 勝尾寺</div>
+                            </div>
+                        </div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot highlight"></div></div>
+                            <a href="https://maps.google.com/?q=Katsuo-ji" target="_blank" class="font-bold text-coffee-text text-lg underline decoration-red-300">勝尾寺 (求勝運)</a>
+                        </div>
+
+                         <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot"></div></div>
+                            <a href="https://maps.google.com/?q=Minoh+Falls" target="_blank" class="font-bold text-coffee-text text-lg underline decoration-blue-300">箕面瀑布 & 山本咖啡</a>
+                        </div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot transport"></div></div>
+                            <div class="transport-box">
+                                <i class="fa-solid fa-person-walking mr-2"></i>步行下山 → 箕面站 → 梅田
+                            </div>
+                        </div>
+
+                        <div class="relative pl-4">
+                            <div class="timeline-node"><div class="timeline-dot"></div></div>
+                            <p class="text-sm font-bold text-latte-primary">21:00 晚餐</p>
+                            <a href="https://maps.google.com/?q=Yakitori" target="_blank" class="font-bold text-coffee-text text-lg underline decoration-latte-primary/30">Yakitori 居酒屋</a>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <div class="relative mb-6">
-                        <div class="timeline-node"><div class="timeline-dot"></div></div>
-                        <p class="text-sm font-bold text-latte-primary">Check-in</p>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Abitare+Namba+West" target="_blank" class="font-bold text-coffee-text text-lg underline decoration-latte-primary/30">Hotel Abitare Namba West</a>
-                        <p class="text-xs text-gray-400">先放行李</p>
+            <div id="day-4" class="day-container mb-8">
+                <div class="flex items-center mb-4">
+                    <span class="bg-coffee-text text-white text-xs font-bold px-2 py-1 rounded mr-2">DAY 4</span>
+                    <span class="text-base font-bold text-coffee-text">12/12 (五) 天橋立</span>
+                </div>
+                <div class="bg-milk-card rounded-2xl p-5 shadow-sm border border-latte-light/30">
+                    <div class="timeline-wrapper relative ml-4">
+                        <div class="timeline-line"></div>
+
+                        <div class="relative mb-4 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot transport"></div></div>
+                            <div class="transport-box">
+                                <span class="font-bold text-coffee-text mr-2">07:51</span> 櫻川 → 西九條<br>
+                                <span class="text-xs">「阪神難波線快速急行」¥220</span>
+                            </div>
+                        </div>
+                        
+                        <div class="relative mb-4 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot transport"></div></div>
+                            <div class="transport-box">
+                                <span class="font-bold text-coffee-text mr-2">08:01</span> 西九條 → 大阪<br>
+                                <span class="text-xs">JR大阪環狀線</span>
+                            </div>
+                        </div>
+
+                        <div class="relative mb-4 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot highlight"></div></div>
+                            <div class="transport-box reserve">
+                                <span class="font-bold text-red-900 mr-2">08:14</span> 大阪 → 福知山<br>
+                                <span class="text-xs font-bold">JR特急 Kounotori (需劃位)</span>
+                            </div>
+                        </div>
+
+                        <div class="relative mb-4 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot highlight"></div></div>
+                            <div class="transport-box reserve">
+                                <span class="font-bold text-red-900 mr-2">09:59</span> 福知山 → 10:40 天橋立<br>
+                                <span class="text-xs font-bold">JR特急 Hashidate (需劃位)</span>
+                            </div>
+                        </div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot"></div></div>
+                            <p class="text-sm font-bold text-latte-primary">11:00 - 11:12</p>
+                            <a href="#" class="font-bold text-coffee-text underline">天橋立觀光船 → 一宮碼頭</a>
+                        </div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot transport"></div></div>
+                            <div class="transport-box">
+                                <span class="font-bold text-coffee-text mr-2">11:24 - 11:57</span>丹海巴士<br>
+                                <span class="text-xs">天橋立元伊勢籠神社 → 道路驛站船屋之鄉伊根</span>
+                            </div>
+                        </div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot highlight"></div></div>
+                            <p class="text-sm font-bold text-latte-primary">12:00 - 13:30</p>
+                            <a href="https://maps.google.com/?q=INE+CAFE" target="_blank" class="font-bold text-coffee-text text-lg underline decoration-latte-primary">INE CAFE / 舟屋群</a>
+                            <p class="text-xs text-gray-500">午餐、逛逛</p>
+                        </div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot transport"></div></div>
+                            <div class="transport-box">
+                                <span class="font-bold text-coffee-text mr-2">13:33 - 13:37</span>丹海巴士<br>
+                                <span class="text-xs">伊根 → 伊根灣巡游觀光船日出站</span>
+                            </div>
+                        </div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot"></div></div>
+                            <p class="text-sm font-bold text-latte-primary">14:00 - 14:30</p>
+                            <a href="#" class="font-bold text-coffee-text underline">伊根觀光船餵海鷗</a>
+                        </div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot transport"></div></div>
+                            <div class="transport-box">
+                                <span class="font-bold text-coffee-text mr-2">14:46 - 15:13</span>丹海巴士<br>
+                                <span class="text-xs">日出站 → 天橋立纜車 (傘松公園)</span>
+                            </div>
+                        </div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot"></div></div>
+                            <p class="text-sm font-bold text-latte-primary">15:13 - 16:10</p>
+                            <a href="https://maps.google.com/?q=Amanohashidate+View+Land" target="_blank" class="font-bold text-coffee-text underline">傘松公園纜車</a>
+                        </div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot"></div></div>
+                            <p class="text-sm font-bold text-latte-primary">16:15 - 16:27</p>
+                            <span class="text-coffee-text">天橋立觀光船 → 天橋立車站</span>
+                        </div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot"></div></div>
+                            <p class="text-sm font-bold text-latte-primary">16:27 - 18:00</p>
+                            <a href="#" class="font-bold text-coffee-text underline">天橋立車站附近</a>
+                            <p class="text-xs text-gray-500">逛逛、吃晚餐、買伴手禮</p>
+                        </div>
+
+                        <div class="relative mb-4 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot highlight"></div></div>
+                            <div class="transport-box reserve">
+                                <span class="font-bold text-red-900 mr-2">18:09</span> 天橋立 → 京都<br>
+                                <span class="text-xs font-bold">JR特急 Hashidate (需劃位)</span>
+                            </div>
+                        </div>
+
+                        <div class="relative mb-4 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot highlight"></div></div>
+                            <div class="transport-box reserve">
+                                <span class="font-bold text-red-900 mr-2">20:30</span> 京都 → 天王寺<br>
+                                <span class="text-xs font-bold">JR Haruka (需劃位)</span>
+                            </div>
+                        </div>
+
+                        <div class="relative pl-4">
+                            <div class="timeline-node"><div class="timeline-dot transport"></div></div>
+                            <div class="transport-box">
+                                <span class="font-bold text-coffee-text mr-2">21:25</span> 天王寺 → JR難波<br>
+                                <span class="text-xs">關西本線 / 大和</span>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            </div>
 
-                     <div class="relative mb-6">
-                        <div class="timeline-node"><div class="timeline-dot highlight"></div></div>
-                        <p class="text-sm font-bold text-rose-500">13:00 (預約)</p>
-                        <a href="https://www.google.com/maps/search/?api=1&query=LIM+Hair+Osaka" target="_blank" class="font-bold text-coffee-text text-lg underline decoration-rose-300">LIM 染髮</a>
-                        <p class="text-xs text-rose-400">請準時抵達</p>
-                    </div>
+            <div id="day-5" class="day-container mb-8">
+                <div class="flex items-center mb-4">
+                    <span class="bg-coffee-text text-white text-xs font-bold px-2 py-1 rounded mr-2">DAY 5</span>
+                    <span class="text-base font-bold text-coffee-text">12/13 (六) 大阪市區</span>
+                </div>
+                <div class="bg-milk-card rounded-2xl p-5 shadow-sm border border-latte-light/30">
+                     <div class="timeline-wrapper relative ml-4">
+                        <div class="timeline-line"></div>
+                        
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot"></div></div>
+                            <p class="text-sm font-bold text-latte-primary">09:00</p>
+                            <a href="https://maps.google.com/?q=Kizu+Market" target="_blank" class="font-bold text-coffee-text text-lg underline decoration-latte-primary/30">木津市場</a>
+                        </div>
+                        
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot"></div></div>
+                            <p class="text-sm font-bold text-latte-primary">上午</p>
+                            <div class="flex flex-col">
+                                <a href="https://maps.google.com/?q=Tsutenkaku" target="_blank" class="font-bold text-coffee-text underline decoration-gray-300 mb-1">通天閣</a>
+                                <a href="https://maps.google.com/?q=Osaka+Castle" target="_blank" class="font-bold text-coffee-text underline decoration-gray-300">大阪城</a>
+                            </div>
+                        </div>
 
-                     <div class="relative">
-                        <div class="timeline-node"><div class="timeline-dot"></div></div>
-                        <p class="text-sm font-bold text-latte-primary">晚上</p>
-                        <div class="flex gap-3">
-                            <a href="https://www.google.com/maps/search/?api=1&query=Namba+Station" target="_blank" class="font-bold text-coffee-text underline decoration-latte-primary/30">難波</a>
-                            <a href="https://www.google.com/maps/search/?api=1&query=Shinsaibashi" target="_blank" class="font-bold text-coffee-text underline decoration-latte-primary/30">心齋橋</a>
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot highlight"></div></div>
+                            <p class="text-sm font-bold text-rose-500">12:30 (預約)</p>
+                            <a href="https://maps.google.com/?q=okuwo" target="_blank" class="font-bold text-coffee-text text-lg underline decoration-rose-300">okuwo shabu</a>
+                        </div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot"></div></div>
+                            <p class="text-sm font-bold text-latte-primary">下午</p>
+                            <div class="flex flex-col">
+                                <a href="https://maps.google.com/?q=Shinsaibashi" target="_blank" class="font-bold text-coffee-text underline decoration-gray-300 mb-1">心齋橋</a>
+                                <a href="#" target="_blank" class="font-bold text-coffee-text underline decoration-gray-300">狗狗寺</a>
+                            </div>
+                        </div>
+
+                        <div class="relative pl-4">
+                            <div class="timeline-node"><div class="timeline-dot"></div></div>
+                            <p class="text-sm font-bold text-latte-primary">18:00</p>
+                            <a href="https://maps.google.com/?q=New+Babe" target="_blank" class="font-bold text-coffee-text text-lg underline decoration-latte-primary/30">new babe 炸豬排</a>
+                        </div>
+                     </div>
+                </div>
+            </div>
+
+            <div id="day-6" class="day-container mb-24">
+                <div class="flex items-center mb-4">
+                    <span class="bg-coffee-text text-white text-xs font-bold px-2 py-1 rounded mr-2">DAY 6</span>
+                    <span class="text-base font-bold text-coffee-text">12/14 (日) 返程</span>
+                </div>
+                <div class="bg-milk-card rounded-2xl p-5 shadow-sm border border-latte-light/30">
+                    <div class="timeline-wrapper relative ml-4">
+                        <div class="timeline-line"></div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot highlight"></div></div>
+                            <div class="transport-box reserve">
+                                <span class="font-bold text-red-900">前往機場 (Haruka)</span><br>
+                                <span class="text-xs">JR難波 → 天王寺 → 關西機場 (需劃位)</span>
+                            </div>
+                        </div>
+
+                        <div class="relative mb-6 pl-4">
+                            <div class="timeline-node"><div class="timeline-dot"></div></div>
+                            <p class="text-sm font-bold text-latte-primary">10:00</p>
+                            <p class="font-bold text-coffee-text">抵達機場 / 逛免稅店</p>
+                        </div>
+
+                        <div class="relative pl-4">
+                            <div class="timeline-node"><div class="timeline-dot"></div></div>
+                            <p class="text-sm font-bold text-latte-primary">12:55</p>
+                            <p class="font-bold text-coffee-text text-lg">BR131 起飛</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="day-2" class="day-container mb-8">
-            <div class="flex items-center mb-4">
-                <span class="bg-coffee-text text-white text-xs font-bold px-2 py-1 rounded mr-2">DAY 2</span>
-                <span class="text-base font-bold text-coffee-text">12/10 (三) 環球影城</span>
+        <div id="page-accounting" class="page-section">
+            <h2 class="text-xl font-bold text-coffee-text mb-4">旅行記帳</h2>
+            <div class="bg-coffee-text rounded-2xl p-6 text-white mb-6 shadow-lg">
+                <p class="text-sm text-latte-primary mb-1">總支出 (JPY)</p>
+                <div class="text-4xl font-bold mb-2 tracking-wider" id="total-amount">¥0</div>
+                <p class="text-xs text-gray-400">約合 TWD <span id="total-twd">0</span></p>
             </div>
-            <div class="bg-milk-card rounded-2xl p-5 shadow-sm border border-latte-light/30">
-                 <div class="timeline-wrapper">
-                    <div class="timeline-line"></div>
-                    
-                    <div class="relative mb-6">
-                        <div class="timeline-node"><div class="timeline-dot transport"></div></div>
-                        <div class="transport-box">
-                            <i class="fa-solid fa-train mr-2"></i>櫻川 → 西九條 → 環球城
-                        </div>
-                    </div>
-
-                    <div class="relative mb-6">
-                        <div class="timeline-node"><div class="timeline-dot highlight"></div></div>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Universal+Studios+Japan" target="_blank" class="font-bold text-coffee-text text-xl underline decoration-purple-300">USJ 大阪環球影城</a>
-                        <p class="text-xs text-purple-500 mt-1">快速通關：Race & Thrill</p>
-                    </div>
-
-                    <div class="relative mb-6 ml-2 bg-purple-50 border border-purple-100 rounded-xl p-4">
-                        <h4 class="font-bold text-purple-800 text-sm mb-2"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>攻略：逆時針 + 二刷任天堂</h4>
-                        <ol class="list-decimal list-inside text-xs text-purple-900 space-y-2">
-                            <li><strong>08:30 入園</strong>：直衝 <span class="font-bold">飛天翼龍</span> (趁人少)。</li>
-                            <li><strong>逆時針玩</strong>：往侏羅紀、大白鯊方向走。</li>
-                            <li><strong>12:50 (快速通關)</strong>：進入 <span class="font-bold">任天堂園區</span> (瑪利歐賽車)。</li>
-                            <li><strong>15:40 (快速通關)</strong>：進入 <span class="font-bold">哈利波特</span> (禁忌之旅)。</li>
-                            <li class="bg-white p-2 rounded border border-purple-200 text-red-500 font-bold">
-                                Tips: 想要晚上二刷任天堂，入園請馬上抽「區域入場整理券」抽晚上的時段！
-                            </li>
-                            <li><strong>晚上</strong>：玩 <span class="font-bold">好萊塢美夢</span>。</li>
-                        </ol>
-                    </div>
-
-                    <div class="relative">
-                        <div class="timeline-node"><div class="timeline-dot"></div></div>
-                        <p class="text-sm font-bold text-latte-primary">晚餐</p>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Sazare+Osaka+Okonomiyaki" target="_blank" class="font-bold text-coffee-text text-lg underline decoration-latte-primary/30">sazare 大阪燒</a>
-                    </div>
-                 </div>
+            <div class="bg-milk-card rounded-2xl p-4 shadow-sm mb-6 border border-latte-light/30">
+                <div class="flex gap-2 mb-3">
+                    <select id="expense-category" class="w-1/3 bg-milk-base rounded-lg border-0 text-xs px-2 py-3 text-coffee-text outline-none">
+                        <option value="飲食">🍴 飲食</option>
+                        <option value="交通">🚃 交通</option>
+                        <option value="購物">🛍️ 購物</option>
+                        <option value="其他">📄 其他</option>
+                    </select>
+                    <input type="text" id="expense-name" placeholder="品項" class="w-2/3 bg-milk-base rounded-lg border-0 px-3 py-3 text-sm text-coffee-text outline-none">
+                </div>
+                <div class="flex gap-2 items-center">
+                    <input type="number" id="expense-price" placeholder="金額 (JPY)" class="flex-1 bg-milk-base rounded-lg border-0 px-3 py-3 text-sm text-coffee-text outline-none">
+                    <button onclick="addExpense()" class="bg-coffee-text text-white px-5 py-3 rounded-lg text-sm font-bold shadow-md active:scale-95">輸入</button>
+                </div>
             </div>
+            <ul id="expense-list" class="space-y-3 pb-20"></ul>
         </div>
 
-        <div id="day-3" class="day-container mb-8">
-            <div class="flex items-center mb-4">
-                <span class="bg-coffee-text text-white text-xs font-bold px-2 py-1 rounded mr-2">DAY 3</span>
-                <span class="text-base font-bold text-coffee-text">12/11 (四) 箕面勝運</span>
-            </div>
-            <div class="bg-milk-card rounded-2xl p-5 shadow-sm border border-latte-light/30">
-                <div class="timeline-wrapper">
-                    <div class="timeline-line"></div>
+        <div id="page-info" class="page-section">
+             <h2 class="text-xl font-bold text-coffee-text mb-4">實用資訊</h2>
+             
+             <div class="bg-milk-card rounded-2xl p-5 shadow-sm border border-latte-light/30 mb-6">
+                 <h3 class="text-sm font-bold text-latte-primary mb-3"><i class="fa-solid fa-cloud-sun mr-2"></i>天氣預報 (高/低溫)</h3>
+                 <div class="flex justify-between text-center divide-x divide-gray-100">
+                     <div class="flex-1"><p class="text-xs text-gray-400 mb-1">12/9</p><i class="fa-solid fa-sun text-orange-300 mb-1"></i><p class="text-xs font-bold text-coffee-text">12°<span class="text-gray-400">/5°</span></p></div>
+                     <div class="flex-1"><p class="text-xs text-gray-400 mb-1">12/10</p><i class="fa-solid fa-cloud-sun text-yellow-400 mb-1"></i><p class="text-xs font-bold text-coffee-text">11°<span class="text-gray-400">/4°</span></p></div>
+                     <div class="flex-1"><p class="text-xs text-gray-400 mb-1">12/11</p><i class="fa-solid fa-cloud text-gray-300 mb-1"></i><p class="text-xs font-bold text-coffee-text">10°<span class="text-gray-400">/3°</span></p></div>
+                     <div class="flex-1"><p class="text-xs text-gray-400 mb-1">12/12</p><i class="fa-solid fa-umbrella text-blue-300 mb-1"></i><p class="text-xs font-bold text-coffee-text">9°<span class="text-gray-400">/2°</span></p></div>
+                     <div class="flex-1"><p class="text-xs text-gray-400 mb-1">12/13</p><i class="fa-solid fa-sun text-orange-300 mb-1"></i><p class="text-xs font-bold text-coffee-text">11°<span class="text-gray-400">/4°</span></p></div>
+                 </div>
+             </div>
 
-                    <div class="relative mb-6">
-                        <div class="timeline-node"><div class="timeline-dot transport"></div></div>
-                        <div class="transport-box">
-     
+             <div class="bg-milk-card rounded-2xl p-5 shadow-sm border border-latte-light/30 mb-20">
+                <h3 class="text-sm font-bold text-latte-primary mb-4"><i class="fa-solid fa-clipboard-check mr-2"></i>行前檢查清單</h3>
+                <div class="grid grid-cols-2 gap-2" id="checklist-container"></div>
+             </div>
+        </div>
+
+        <div id="page-guide" class="page-section">
+             <div class="flex flex-col h-[80vh]">
+                <div class="flex-none mb-4">
+                    <h2 class="text-xl font-bold text-coffee-text">智能導遊</h2>
+                    <p class="text-xs text-gray-400">輸入關鍵字：天氣、環球、天橋立...</p>
+                </div>
+                <div id="chat-box" class="flex-1 overflow-y-auto bg-white/50 rounded-2xl p-4 mb-4 space-y-4 shadow-inner border border-milk-base no-scrollbar">
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 rounded-full bg-latte-primary flex items-center justify-center text-white flex-shrink-0 mr-2"><i class="fa-solid fa-dog text-xs"></i></div>
+                        <div class="bg-white p-3 rounded-r-xl rounded-bl-xl shadow-sm text-sm text-coffee-text border border-gray-100">
+                            汪！我是你們的大阪小幫手 🐶<br>USJ 攻略我已經幫你們寫在行程裡囉！
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-none flex gap-2 mb-20">
+                    <input type="text" id="chat-input" placeholder="輸入問題..." class="flex-1 bg-white rounded-xl border border-latte-light px-4 py-3 text-sm focus:outline-none focus:border-latte-primary shadow-sm">
+                    <button onclick="sendMessage()" class="bg-coffee-text text-white w-12 rounded-xl flex items-center justify-center shadow-md active:scale-95"><i class="fa-solid fa-paper-plane text-sm"></i></button>
+                </div>
+             </div>
+        </div>
+
+    </main>
+
+    <nav class="fixed bottom-0 w-full glass-nav border-t border-white/20 pb-safe z-50">
+        <div class="flex justify-around items-center h-16 max-w-md mx-auto">
+            <button onclick="showPage('page-itinerary')" class="nav-btn w-full h-full flex flex-col items-center justify-center text-coffee-text active-nav" data-target="page-itinerary">
+                <i class="fa-solid fa-map-location-dot text-lg mb-1"></i><span class="text-[10px]">行程</span>
+            </button>
+            <button onclick="showPage('page-accounting')" class="nav-btn w-full h-full flex flex-col items-center justify-center text-gray-400 hover:text-latte-primary" data-target="page-accounting">
+                <i class="fa-solid fa-wallet text-lg mb-1"></i><span class="text-[10px]">記帳</span>
+            </button>
+            <button onclick="showPage('page-info')" class="nav-btn w-full h-full flex flex-col items-center justify-center text-gray-400 hover:text-latte-primary" data-target="page-info">
+                <i class="fa-solid fa-circle-info text-lg mb-1"></i><span class="text-[10px]">資訊</span>
+            </button>
+            <button onclick="showPage('page-guide')" class="nav-btn w-full h-full flex flex-col items-center justify-center text-gray-400 hover:text-latte-primary" data-target="page-guide">
+                <i class="fa-solid fa-comments text-lg mb-1"></i><span class="text-[10px]">導遊</span>
+            </button>
+        </div>
+    </nav>
+
+    <script>
+        // --- Navigation ---
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if(btn.dataset.target === pageId) {
+                    btn.classList.add('text-coffee-text'); btn.classList.remove('text-gray-400');
+                } else {
+                    btn.classList.remove('text-coffee-text'); btn.classList.add('text-gray-400');
+                }
+            });
+            window.scrollTo(0,0);
+        }
+
+        function filterItinerary(dayId) {
+            const days = document.querySelectorAll('.day-container');
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('onclick').includes(dayId)) {
+                    btn.classList.add('active', 'bg-latte-primary', 'text-white');
+                    btn.classList.remove('bg-latte-light', 'text-coffee-text');
+                } else {
+                    btn.classList.remove('active', 'bg-latte-primary', 'text-white');
+                    btn.classList.add('bg-latte-light', 'text-coffee-text');
+                }
+            });
+            if (dayId === 'all') { days.forEach(day => day.style.display = 'block'); } 
+            else { days.forEach(day => day.id === dayId ? day.style.display = 'block' : day.style.display = 'none'); }
+            window.scrollTo(0,0);
+        }
+
+        // --- Accounting ---
+        const RATE = 0.20;
+        let expenses = JSON.parse(localStorage.getItem('osakaTripExpenses')) || [];
+        function renderExpenses() {
+            const list = document.getElementById('expense-list');
+            const totalEl = document.getElementById('total-amount');
+            const totalTwdEl = document.getElementById('total-twd');
+            list.innerHTML = '';
+            let total = 0;
+            expenses.slice().reverse().forEach((item, index) => {
+                total += parseInt(item.amount);
+                const li = document.createElement('li');
+                li.className = 'bg-milk-card p-4 rounded-xl shadow-sm border border-latte-light/20 flex justify-between items-center';
+                li.innerHTML = `
+                    <div class="flex items-center"><span class="text-xs bg-latte-light text-coffee-text px-2 py-1 rounded mr-3">${item.category}</span><span class="text-coffee-text font-medium text-sm">${item.name}</span></div>
+                    <div class="flex items-center"><span class="font-bold text-coffee-text mr-3">¥${item.amount}</span><button onclick="deleteExpense(${expenses.length - 1 - index})" class="text-gray-300 hover:text-red-400"><i class="fa-solid fa-xmark"></i></button></div>
+                `;
+                list.appendChild(li);
+            });
+            totalEl.innerText = `¥${total}`; totalTwdEl.innerText = Math.round(total * RATE);
+            localStorage.setItem('osakaTripExpenses', JSON.stringify(expenses));
+        }
+        function addExpense() {
+            const name = document.getElementById('expense-name').value;
+            const amount = document.getElementById('expense-price').value;
+            const category = document.getElementById('expense-category').value;
+            if(name && amount) { expenses.push({ name, amount, category }); document.getElementById('expense-name').value = ''; document.getElementById('expense-price').value = ''; renderExpenses(); }
+        }
+        function deleteExpense(originalIndex) { if(confirm('刪除此紀錄？')) { expenses.splice(originalIndex, 1); renderExpenses(); } }
+        renderExpenses();
+
+        // --- Checklist ---
+        const items = ['衣服等等','墨鏡','耳環/戒指/橡皮筋','帽子','鞋子','碗筷','拖鞋','枕頭/棉被','手機背帶','毛巾浴巾','牙刷','衣架','電風扇','防蚊液/腸胃藥','行李秤','購物袋/行李袋','手錶充電器','睡衣','護照/證件','充電器/行充','香水','相機/底片','電腦/轉接頭/腳架','錢包/鑰匙','口罩/酒精/衛生紙/棉花棒','眼鏡/隱眼','各種藥類','化妝品 (洗、化、防、定)','離子夾梳子'];
+        const checklistContainer = document.getElementById('checklist-container');
+        let checkedState = JSON.parse(localStorage.getItem('osakaChecklistFull')) || {};
+        items.forEach((item, idx) => {
+            const isChecked = checkedState[item] ? 'checked' : '';
+            const div = document.createElement('div');
+            div.className = 'flex items-center p-2 hover:bg-gray-50 rounded-lg transition-colors col-span-1';
+            div.innerHTML = `<input type="checkbox" id="check-${idx}" class="w-4 h-4 text-rose-accent rounded focus:ring-rose-accent" ${isChecked} onchange="toggleCheck('${item}')"><label for="check-${idx}" class="ml-3 text-xs text-coffee-text cursor-pointer truncate ${isChecked ? 'line-through text-gray-400' : ''}">${item}</label>`;
+            checklistContainer.appendChild(div);
+        });
+        function toggleCheck(item) { checkedState[item] = !checkedState[item]; localStorage.setItem('osakaChecklistFull', JSON.stringify(checkedState)); location.reload(); }
+
+        // --- Guide ---
+        const botResponses = {
+            '天氣': '這幾天大阪氣溫約 5-12度，記得帶保暖外套！天橋立那天會比較冷喔。',
+            '交通': 'Day 4 去天橋立的特急 Kounotori 和 Hashidate 記得一定要先劃位！',
+            '環球': 'USJ 攻略：一早先衝飛天翼龍，12:50 用快速通關玩任天堂，15:40 玩哈利波特。想二刷任天堂記得一入園就抽整理券！',
+            '退稅': '滿 5000 日圓(未稅) 記得出示護照辦理退稅。',
+            'default': '這題我可能不知道... 汪！🐶'
+        };
+        function sendMessage() {
+            const input = document.getElementById('chat-input'); const box = document.getElementById('chat-box'); const msg = input.value.trim();
+            if(!msg) return;
+            box.innerHTML += `<div class="flex items-center justify-end"><div class="bg-latte-primary text-white p-3 rounded-l-xl rounded-tr-xl shadow-md text-sm max-w-[80%]">${msg}</div></div>`;
+            box.scrollTop = box.scrollHeight; input.value = '';
+            setTimeout(() => {
+                let reply = botResponses['default'];
+                for(let key in botResponses) { if(msg.includes(key)) reply = botResponses[key]; }
+                box.innerHTML += `<div class="flex items-start"><div class="w-8 h-8 rounded-full bg-latte-primary flex items-center justify-center text-white flex-shrink-0 mr-2"><i class="fa-solid fa-dog text-xs"></i></div><div class="bg-white p-3 rounded-r-xl rounded-bl-xl shadow-sm text-sm text-coffee-text border border-gray-100 max-w-[80%]">${reply}</div></div>`;
+                box.scrollTop = box.scrollHeight;
+            }, 600);
+        }
+    </script>
+</body>
+</html>
