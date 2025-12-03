@@ -20,7 +20,7 @@
                     fontSize: {
                         'card-title': '18px',
                         'card-body': '15px',
-                        'weather-lg': '32px', // 大溫度
+                        'weather-lg': '24px', // 稍微調整大小以適應圓框
                     },
                     boxShadow: {
                         'card': '0 4px 20px -2px rgba(74, 59, 50, 0.08)',
@@ -71,7 +71,7 @@
             align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(74, 59, 50, 0.3);
         }
 
-        /* Transport Text (Connector) */
+        /* Transport Text */
         .transport-text {
             font-size: 13px; color: #8C8C8C; padding: 8px 0; margin-left: 48px; position: relative;
         }
@@ -87,10 +87,18 @@
             margin-bottom: 8px; border: 1px solid #E8E4D9;
         }
 
-        /* Weather Badge (New Style) */
-        .weather-badge { display: flex; align-items: center; gap: 8px; }
-        .weather-temp { font-size: 32px; font-weight: 800; color: #4A3B32; line-height: 1; }
-        .weather-sub { font-size: 14px; color: #8C8C8C; font-weight: 500; }
+        /* Weather Badge (Updated to Pill Shape) */
+        .weather-badge { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            background-color: #F3F4F6; /* 淺灰底 */
+            padding: 8px 16px; 
+            border-radius: 50px; /* 圓潤膠囊狀 */
+            border: 1px solid #E5E7EB;
+        }
+        .weather-temp { font-size: 28px; font-weight: 800; color: #4A3B32; line-height: 1; }
+        .weather-sub { font-size: 13px; color: #9CA3AF; font-weight: 500; }
 
         .page-section { display: none; }
         .page-section.active { display: block; }
@@ -151,7 +159,7 @@
                         <div class="text-[20px] font-bold text-coffee-text mt-1">12/9 (二) 抵達與逛街</div>
                     </div>
                     <div class="weather-badge">
-                        <i class="fa-solid fa-sun text-2xl text-orange-400"></i>
+                        <i class="fa-solid fa-sun text-xl text-orange-400"></i>
                         <span class="weather-temp">12°</span>
                         <span class="weather-sub">/ 5°</span>
                     </div>
@@ -204,7 +212,7 @@
                         <div class="text-[20px] font-bold text-coffee-text mt-1">12/10 (三) 環球影城</div>
                     </div>
                     <div class="weather-badge">
-                        <i class="fa-solid fa-cloud-sun text-2xl text-yellow-500"></i>
+                        <i class="fa-solid fa-cloud-sun text-xl text-yellow-500"></i>
                         <span class="weather-temp">11°</span>
                         <span class="weather-sub">/ 4°</span>
                     </div>
@@ -257,7 +265,7 @@
                         <div class="text-[20px] font-bold text-coffee-text mt-1">12/11 (四) 箕面勝運</div>
                     </div>
                     <div class="weather-badge">
-                        <i class="fa-solid fa-snowflake text-2xl text-blue-300"></i>
+                        <i class="fa-solid fa-snowflake text-xl text-blue-300"></i>
                         <span class="weather-temp">10°</span>
                         <span class="weather-sub">/ 3°</span>
                     </div>
@@ -322,7 +330,7 @@
                         <div class="text-[20px] font-bold text-coffee-text mt-1">12/12 (五) 天橋立</div>
                     </div>
                     <div class="weather-badge">
-                        <i class="fa-solid fa-cloud-showers-heavy text-2xl text-blue-400"></i>
+                        <i class="fa-solid fa-cloud-showers-heavy text-xl text-blue-400"></i>
                         <span class="weather-temp">9°</span>
                         <span class="weather-sub">/ 2°</span>
                     </div>
@@ -391,7 +399,7 @@
                         <div class="text-[20px] font-bold text-coffee-text mt-1">12/14 (日) 返程</div>
                     </div>
                     <div class="weather-badge">
-                        <i class="fa-solid fa-cloud text-2xl text-gray-400"></i>
+                        <i class="fa-solid fa-cloud text-xl text-gray-400"></i>
                         <span class="weather-temp">10°</span>
                         <span class="weather-sub">/ 3°</span>
                     </div>
@@ -467,15 +475,11 @@
     <script>
         function showPage(pageId) { document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active')); document.getElementById(pageId).classList.add('active'); document.querySelectorAll('.sidebar-btn').forEach(btn => { if(btn.dataset.target === pageId) { btn.classList.add('active', 'text-white', 'bg-coffee-text'); btn.classList.remove('text-gray-400'); } else { btn.classList.remove('active', 'text-white', 'bg-coffee-text'); btn.classList.add('text-gray-400'); } }); window.scrollTo(0,0); }
         function filterItinerary(dayId) { const days = document.querySelectorAll('.day-container'); const buttons = document.querySelectorAll('.filter-btn'); buttons.forEach(btn => { if (btn.getAttribute('onclick').includes(dayId)) { btn.classList.add('active', 'bg-latte-primary', 'text-white'); btn.classList.remove('bg-white', 'text-gray-500'); } else { btn.classList.remove('active', 'bg-latte-primary', 'text-white'); btn.classList.add('bg-white', 'text-gray-500'); } }); if (dayId === 'all') { days.forEach(day => day.style.display = 'block'); } else { days.forEach(day => day.id === dayId ? day.style.display = 'block' : day.style.display = 'none'); } }
-        
-        // Accounting Logic
         const RATE = 0.215; let expenses = JSON.parse(localStorage.getItem('osakaTripExpenses')) || [];
         function renderExpenses() { const list = document.getElementById('expense-list'); const totalEl = document.getElementById('total-amount'); const totalTwdEl = document.getElementById('total-twd'); list.innerHTML = ''; let total = 0; expenses.slice().reverse().forEach((item, index) => { total += parseInt(item.amount); const li = document.createElement('li'); li.className = 'bg-white p-4 rounded-xl shadow-soft border border-gray-50 flex justify-between items-center'; li.innerHTML = `<div class="flex items-center"><span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded mr-3">${item.category}</span><span class="text-coffee-text font-medium text-sm">${item.name}</span></div><div class="flex items-center"><span class="font-bold text-coffee-text mr-3">¥${item.amount}</span><button onclick="deleteExpense(${expenses.length - 1 - index})" class="text-gray-300 hover:text-red-400"><i class="fa-solid fa-trash-can"></i></button></div>`; list.appendChild(li); }); totalEl.innerText = `¥${total}`; totalTwdEl.innerText = Math.round(total * RATE); localStorage.setItem('osakaTripExpenses', JSON.stringify(expenses)); }
         function addExpense() { const name = document.getElementById('expense-name').value; const amount = document.getElementById('expense-price').value; const category = document.getElementById('expense-category').value; if(name && amount) { expenses.push({ name, amount, category }); document.getElementById('expense-name').value = ''; document.getElementById('expense-price').value = ''; renderExpenses(); } }
         function deleteExpense(index) { if(confirm('刪除？')) { expenses.splice(index, 1); renderExpenses(); } }
         renderExpenses();
-
-        // Shopping Logic
         let shopList = JSON.parse(localStorage.getItem('osakaShopList')) || [];
         function renderShopList() { const grid = document.getElementById('shop-grid'); grid.innerHTML = ''; shopList.forEach((item, idx) => { const div = document.createElement('div'); div.className = 'shop-item bg-white rounded-xl shadow-card p-3'; const imgHTML = item.img ? `<div class="shop-img-box mb-3"><img src="${item.img}" class="shop-img"></div>` : `<div class="shop-img-box mb-3 flex items-center justify-center text-gray-300"><i class="fa-solid fa-image text-2xl"></i></div>`; div.innerHTML = `${imgHTML}<div class="font-bold text-coffee-text text-sm truncate">${item.name}</div><div class="text-xs text-gray-400 mb-2 truncate">${item.desc}</div><button onclick="deleteShopItem(${idx})" class="w-full py-1.5 bg-gray-50 text-gray-400 text-xs rounded hover:bg-red-50 hover:text-red-400 transition-colors"><i class="fa-solid fa-trash-can"></i></button>`; grid.appendChild(div); }); localStorage.setItem('osakaShopList', JSON.stringify(shopList)); }
         function openModal() { document.getElementById('shop-modal').classList.add('show'); }
@@ -483,7 +487,6 @@
         function saveShopItem() { const name = document.getElementById('shop-name').value; const desc = document.getElementById('shop-desc').value; const fileInput = document.getElementById('shop-file'); if(!name) return; if(fileInput.files && fileInput.files[0]) { const reader = new FileReader(); reader.onload = function(e) { shopList.push({ name, desc, img: e.target.result }); closeModal(); renderShopList(); }; reader.readAsDataURL(fileInput.files[0]); } else { shopList.push({ name, desc, img: null }); closeModal(); renderShopList(); } }
         function deleteShopItem(idx) { if(confirm('刪除？')) { shopList.splice(idx, 1); renderShopList(); } }
         renderShopList();
-
         function convertCurrency(type) { const jpyInput = document.getElementById('conv-jpy'); const twdInput = document.getElementById('conv-twd'); if(type === 'jpy') { twdInput.value = Math.round(jpyInput.value * RATE); } else { jpyInput.value = Math.round(twdInput.value / RATE); } }
         const items = ['護照','VJW 截圖','網卡','日幣','充電器','牙刷','雨傘','常備藥']; const checklistContainer = document.getElementById('checklist-container'); let checkedState = JSON.parse(localStorage.getItem('osakaChecklistNew')) || {}; items.forEach((item, idx) => { const isChecked = checkedState[item] ? 'checked' : ''; const div = document.createElement('div'); div.className = 'flex items-center p-3 border-b border-gray-50 last:border-0'; div.innerHTML = `<input type="checkbox" id="check-${idx}" class="w-5 h-5 accent-latte-primary rounded cursor-pointer" ${isChecked} onchange="toggleCheck('${item}')"><label for="check-${idx}" class="ml-3 text-sm text-coffee-text cursor-pointer flex-1 ${isChecked ? 'line-through text-gray-300' : ''}">${item}</label>`; checklistContainer.appendChild(div); });
         function toggleCheck(item) { checkedState[item] = !checkedState[item]; localStorage.setItem('osakaChecklistNew', JSON.stringify(checkedState)); location.reload(); }
