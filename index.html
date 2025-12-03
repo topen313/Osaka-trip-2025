@@ -11,19 +11,18 @@
             theme: {
                 extend: {
                     colors: {
-                        'milk-base': '#FDFCF8', // 奶油白背景
-                        'coffee-text': '#4A3B32', // 深咖啡文字
-                        'coffee-dark': '#3E2F28', // 按鈕深色
-                        'latte-primary': '#A89F91', // 拿鐵主色
-                        'latte-light': '#E8E4D9', // 淺拿鐵線條
-                        'cream-card': '#FFFFFF', // 卡片白
+                        'milk-base': '#FDFCF8',
+                        'coffee-text': '#4A3B32',
+                        'coffee-dark': '#3E2F28',
+                        'latte-primary': '#A89F91',
+                        'latte-light': '#E8E4D9',
+                        'cream-card': '#FFFFFF',
                         'pale-red': '#FEF2F2',
                         'pale-red-border': '#FECACA',
-                        // Weather Bar Colors
-                        'weather-sunny': '#FFFBEB',   /* 晴天黃 */
-                        'weather-cloudy': '#F3F4F6',  /* 陰天灰 */
-                        'weather-cold': '#EFF6FF',    /* 雨天藍 */
-                        // Pastel Colors for Cards (Backgrounds if needed, mainly white now)
+                        'weather-sunny': '#FFFBEB',
+                        'weather-cloudy': '#F3F4F6',
+                        'weather-cold': '#EFF6FF',
+                        // Pastel Colors
                         'pastel-pink': '#FFF1F2',
                         'pastel-orange': '#FFF7ED',
                         'pastel-green': '#F0FDF4',
@@ -55,37 +54,22 @@
         /* Tabs */
         .nav-tab {
             width: 50px; height: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            margin-bottom: 10px; border-radius: 12px; font-weight: bold; font-size: 14px; color: #A89F91; transition: all 0.2s; cursor: pointer;
+            margin-bottom: 12px; border-radius: 12px; font-weight: bold; font-size: 14px; color: #A89F91; transition: all 0.2s; cursor: pointer;
         }
         .nav-tab:hover { background-color: #F0EBE5; }
         .nav-tab.active { background-color: #4A3B32; color: #FFFFFF; box-shadow: 0 4px 10px rgba(74, 59, 50, 0.2); }
-        .nav-tab-date { font-size: 10px; font-weight: normal; margin-top: -2px; }
+        .nav-tab-date { font-size: 10px; font-weight: normal; }
         
-        /* Sidebar Separator */
-        .nav-separator { width: 40px; height: 2px; background-color: #E8E4D9; margin: 10px 0 16px 0; border-radius: 2px; }
-
-        /* Sidebar Bottom Buttons */
-        .nav-func {
+        /* Separator & Bottom Tools */
+        .nav-separator { width: 40px; height: 1px; background-color: #E8E4D9; margin: 10px 0 16px 0; }
+        .nav-util {
             width: 50px; height: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            margin-bottom: 10px; border-radius: 12px; color: #A89F91; transition: all 0.2s; cursor: pointer; font-size: 10px; font-weight: bold;
+            margin-bottom: 12px; border-radius: 12px; color: #A89F91; transition: all 0.2s; cursor: pointer; font-size: 10px;
         }
-        .nav-func i { font-size: 18px; margin-bottom: 2px; }
-        .nav-func.active { background-color: #A89F91; color: white; }
+        .nav-util i { font-size: 18px; margin-bottom: 2px; }
+        .nav-util.active { background-color: #A89F91; color: white; }
 
-        /* Top Right Tools (Floating) */
-        .top-tools {
-            position: fixed; top: 20px; right: 20px; z-index: 60;
-            display: flex; gap: 10px;
-        }
-        .tool-btn {
-            width: 44px; height: 44px; background-color: #FFFFFF; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 12px rgba(74, 59, 50, 0.15); border: 1px solid #E8E4D9;
-            color: #4A3B32; font-size: 16px; transition: all 0.2s; cursor: pointer;
-        }
-        .tool-btn:active { transform: scale(0.95); background-color: #F5F3EF; }
-
-        /* Page Views */
+        /* Views */
         .view-section { display: none; animation: fadeIn 0.3s ease; }
         .view-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -94,6 +78,7 @@
         .timeline-line-vertical { position: absolute; left: 19px; top: 10px; bottom: -10px; width: 2px; background-color: #E8E4D9; z-index: 0; }
         .timeline-dot { width: 12px; height: 12px; border-radius: 50%; background-color: #A89F91; border: 2px solid #FDFCF8; z-index: 10; position: relative; box-shadow: 0 0 0 1px #E8E4D9; }
         .timeline-dot.active { background-color: #4A3B32; }
+        .timeline-dot.transport { background-color: #9CA3AF; width: 8px; height: 8px; left: 2px; border: none; box-shadow: none; }
         
         .creamy-card { 
             background-color: #FFFFFF; border-radius: 16px; padding: 16px; 
@@ -102,26 +87,21 @@
         .creamy-card:active { transform: scale(0.98); }
         .nav-arrow { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background-color: #F5F3EF; color: #4A3B32; font-size: 14px; }
         
-        /* Hotel Button (Deep Coffee) */
-        .btn-hotel { font-size: 13px; padding: 10px 20px; border-radius: 30px; font-weight: 600; background-color: #3E2F28; color: white; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(74, 59, 50, 0.3); transition: opacity 0.2s; }
+        /* Hotel Button */
+        .btn-hotel { font-size: 14px; padding: 12px 24px; border-radius: 30px; font-weight: 600; background-color: #3E2F28; color: white; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(74, 59, 50, 0.3); transition: opacity 0.2s; }
         .btn-hotel:active { opacity: 0.8; }
 
         /* Text & Layout */
         .transport-text { font-size: 13px; color: #8C8C8C; padding: 10px 0; margin-left: 48px; position: relative; display: flex; align-items: center; flex-wrap: wrap; }
         .transport-text::before { content: ''; position: absolute; left: -29px; top: 50%; width: 6px; height: 6px; background-color: #E8E4D9; border-radius: 50%; transform: translateY(-50%); }
+        .weather-capsule { display: inline-flex; align-items: center; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 13px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); margin-left: 48px; margin-bottom: 16px; border: 1px solid rgba(0,0,0,0.05); }
         
-        /* Weather Bar (Independent Capsule) */
-        .weather-capsule {
-            display: inline-flex; align-items: center; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 13px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05); margin-left: 48px; margin-bottom: 16px; border: 1px solid rgba(0,0,0,0.05);
-        }
-
-        /* Collapsible JR */
+        /* Collapsible */
         .collapsible-header { cursor: pointer; user-select: none; }
         .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
         .collapsible-content.open { max-height: 500px; }
 
-        /* Day Headers */
+        /* Headers */
         .day-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-top: 20px; border-top: 1px dashed #E8E4D9; }
         .day-header.first { border-top: none; padding-top: 0; }
 
@@ -129,10 +109,22 @@
         .shop-item { position: relative; overflow: hidden; }
         .shop-img-box { width: 100%; padding-top: 100%; position: relative; background: #f3f4f6; border-radius: 8px; overflow: hidden; }
         .shop-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-        
+        .shop-btn { display: flex; align-items: center; justify-content: space-between; background: #F9F8F6; padding: 12px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #E8E4D9; }
+
+        /* App Icons Grid */
+        .app-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .app-btn {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: #FFFFFF; padding: 16px; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 1px solid #F3F4F6; transition: all 0.2s;
+        }
+        .app-btn:active { transform: scale(0.95); background: #F9F8F6; }
+        .app-icon { font-size: 28px; margin-bottom: 8px; }
+        .app-name { font-size: 13px; font-weight: bold; color: #4A3B32; }
+
+        /* Modal */
         .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(74, 59, 50, 0.4); backdrop-filter: blur(2px); align-items: center; justify-content: center; }
         .modal.show { display: flex; }
-        .shop-btn { display: flex; align-items: center; justify-content: space-between; background: #F9F8F6; padding: 12px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #E8E4D9; }
     </style>
 </head>
 <body class="bg-milk-base">
@@ -152,22 +144,16 @@
 
         <div class="nav-separator"></div>
 
-        <div onclick="switchPage('page-accounting')" class="nav-func" id="nav-accounting">
+        <div onclick="switchPage('page-accounting')" class="nav-util" id="nav-accounting">
             <i class="fa-solid fa-wallet"></i><span>記帳</span>
         </div>
-        <div onclick="switchPage('page-shopping')" class="nav-func" id="nav-shopping">
+        <div onclick="switchPage('page-shopping')" class="nav-util" id="nav-shopping">
             <i class="fa-solid fa-bag-shopping"></i><span>購物</span>
         </div>
-        <div onclick="switchPage('page-info')" class="nav-func" id="nav-info">
-            <i class="fa-solid fa-circle-info"></i><span>資訊</span>
+        <div onclick="switchPage('page-info')" class="nav-util" id="nav-info">
+            <i class="fa-solid fa-circle-info"></i><span>工具</span>
         </div>
     </nav>
-
-    <div class="top-tools">
-        <button onclick="switchPage('page-accounting')" class="tool-btn"><i class="fa-solid fa-wallet"></i></button>
-        <button onclick="switchPage('page-shopping')" class="tool-btn"><i class="fa-solid fa-bag-shopping"></i></button>
-        <button onclick="switchPage('page-info')" class="tool-btn"><i class="fa-solid fa-circle-info"></i></button>
-    </div>
 
     <main class="main-content no-scrollbar" id="main-scroll">
 
@@ -207,7 +193,6 @@
                     </div>
                     <div class="relative">
                         <div class="timeline-line-vertical"></div>
-                        
                         <div class="weather-capsule bg-weather-sunny text-orange-800 border border-orange-100">
                             <i class="fa-solid fa-sun text-orange-400 mr-2"></i><span>晴時多雲 12°C</span>
                         </div>
@@ -329,7 +314,7 @@
 
                         <div class="flex gap-4 mb-2 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">21:00</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card"><h4 class="text-card-title font-bold text-coffee-text">Yakitori 居酒屋</h4></div>
+                            <div class="flex-1 creamy-card"><h4 class="text-card-title font-bold text-coffee-text">Grilled Yakitori Tokoha</h4><p class="text-card-body text-gray-500 mt-1">Namba 居酒屋</p></div>
                         </div>
                     </div>
                     <div class="flex justify-center mt-6"><a href="https://www.google.com/maps/search/?api=1&query=Hotel+Abitare+Namba+West" target="_blank" class="btn-hotel"><i class="fa-solid fa-bed"></i> 返回飯店</a></div>
@@ -388,7 +373,13 @@
 
                         <div class="flex gap-4 mb-2 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">16:27</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card"><h4 class="text-card-title font-bold text-coffee-text">天橋立車站逛逛</h4><p class="text-card-body text-gray-500 mt-1">吃晚餐、買伴手禮</p></div>
+                            <div class="flex-1 creamy-card flex justify-between items-center">
+                                <div>
+                                    <h4 class="text-card-title font-bold text-coffee-text">天橋立車站逛逛</h4>
+                                    <p class="text-card-body text-gray-500 mt-1">晚餐伴手禮 (推薦:智恩寺/智慧之餅)</p>
+                                </div>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Amanohashidate+Station" target="_blank" class="nav-arrow"><i class="fa-solid fa-map-pin"></i></a>
+                            </div>
                         </div>
 
                         <div class="transport-text"><span class="text-red-700 font-bold mr-2">18:09</span> 天橋立站 → 京都站<br>（JR特急 Hashidate）<span class="text-red-500 font-bold bg-red-50 px-1 rounded text-xs ml-1">必劃位</span></div>
@@ -446,7 +437,7 @@
                         <div class="flex gap-4 mb-6 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">18:00</span><div class="timeline-dot"></div></div>
                             <div class="flex-1 creamy-card flex justify-between items-center">
-                                <div><h4 class="text-card-title font-bold text-coffee-text">new babe 炸豬排</h4></div>
+                                <div><h4 class="text-card-title font-bold text-coffee-text">Tonkatsu New Babe</h4><p class="text-card-body text-gray-500 mt-1">Namba 炸豬排</p></div>
                                 <a href="https://www.google.com/maps/search/?api=1&query=New+Babe+Pork+Cutlet" target="_blank" class="nav-arrow"><i class="fa-solid fa-utensils"></i></a>
                             </div>
                         </div>
@@ -475,7 +466,7 @@
                         <div class="flex gap-4 mb-2 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">10:50</span><div class="timeline-dot"></div></div>
                             <div class="flex-1 creamy-card flex justify-between items-center">
-                                <div><h4 class="text-card-title font-bold text-coffee-text">抵達關西機場 (KIX)</h4><p class="text-card-body text-gray-500 mt-1">📍 第一航廈 (T1) / BR櫃檯</p></div>
+                                <div><h4 class="text-card-title font-bold text-coffee-text">抵達關西機場 (KIX)</h4><p class="text-card-body text-gray-500 mt-1">4F 出境 / 3F 購物</p></div>
                                 <a href="https://goo.gl/maps/KansaiAirport" target="_blank" class="nav-arrow"><i class="fa-solid fa-map-pin"></i></a>
                             </div>
                         </div>
@@ -502,14 +493,14 @@
             </div>
             
             <div class="bg-white rounded-2xl p-4 shadow-card mb-6 max-w-lg mx-auto">
-                <div class="grid grid-cols-3 gap-2 mb-3">
-                    <select id="expense-category" class="col-span-1 bg-gray-50 rounded-lg text-sm px-2 py-3 outline-none border border-gray-100">
+                <div class="flex gap-2 mb-3">
+                    <select id="expense-category" class="flex-1 bg-gray-50 rounded-lg text-sm px-2 py-3 outline-none border border-gray-100">
                         <option value="飲食">🍴 飲食</option><option value="交通">🚃 交通</option><option value="購物">🛍️ 購物</option><option value="門票">🎫 門票</option><option value="住宿">🏠 住宿</option><option value="伴手禮">🎁 伴手禮</option><option value="零食">🍦 零食</option><option value="其他">📄 其他</option>
                     </select>
-                    <input type="text" id="expense-name" placeholder="品項" class="col-span-2 bg-gray-50 rounded-lg px-3 py-3 text-sm outline-none border border-gray-100">
+                    <input type="number" id="expense-price" placeholder="金額" class="w-1/3 bg-gray-50 rounded-lg px-3 py-3 text-sm outline-none border border-gray-100">
                 </div>
                 <div class="flex gap-2">
-                    <input type="number" id="expense-price" placeholder="金額 (JPY)" class="flex-1 bg-gray-50 rounded-lg px-3 py-3 text-sm outline-none border border-gray-100">
+                    <input type="text" id="expense-name" placeholder="品項名稱" class="flex-1 bg-gray-50 rounded-lg px-3 py-3 text-sm outline-none border border-gray-100">
                     <button onclick="addExpense()" class="bg-coffee-text text-white px-6 rounded-lg text-sm font-bold active:scale-95 transition-transform">新增</button>
                 </div>
             </div>
@@ -538,8 +529,22 @@
             </div>
 
             <div class="bg-white rounded-2xl p-5 shadow-card border border-gray-100 max-w-lg mx-auto mb-20">
-                <h3 class="text-sm font-bold text-latte-primary mb-4"><i class="fa-solid fa-list-check mr-2"></i>行前檢查</h3>
-                <div class="grid grid-cols-1 gap-2" id="checklist-container"></div>
+                <h3 class="text-sm font-bold text-latte-primary mb-4">常用工具</h3>
+                <div class="app-grid">
+                    <a href="https://m.uber.com/ul" target="_blank" class="app-btn">
+                        <i class="fa-brands fa-uber app-icon text-black"></i><span class="app-name">Uber</span>
+                    </a>
+                    <a href="https://www.google.com/maps" target="_blank" class="app-btn">
+                        <i class="fa-solid fa-map-location-dot app-icon text-green-600"></i><span class="app-name">Maps</span>
+                    </a>
+                    <a href="https://translate.google.com" target="_blank" class="app-btn">
+                        <i class="fa-solid fa-language app-icon text-blue-500"></i><span class="app-name">翻譯</span>
+                    </a>
+                    <a href="https://japantravel.navitime.com/en/area/jp/route/" target="_blank" class="app-btn">
+                        <i class="fa-solid fa-train-subway app-icon text-red-500"></i><span class="app-name">乘換案內</span>
+                    </a>
+                </div>
+                <p class="text-[10px] text-gray-400 mt-2 text-center">*翻譯為 Google 網頁版 (Apple 不支援網頁呼叫)</p>
             </div>
         </div>
 
@@ -564,16 +569,13 @@
     <script>
         // --- Navigation Logic ---
         function showItinerary(dayId) {
-            // Ensure Itinerary Page is Active
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             document.getElementById('page-itinerary').classList.add('active');
             
-            // Activate Tab
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.nav-func').forEach(t => t.classList.remove('active'));
             document.getElementById('tab-all').classList.add('active');
 
-            // Scroll to Top
             document.querySelector('.main-content').scrollTo(0,0);
         }
 
@@ -585,7 +587,6 @@
             document.querySelectorAll('.nav-func').forEach(t => t.classList.remove('active'));
             document.getElementById('tab-' + dayId).classList.add('active');
 
-            // Scroll Logic
             const target = document.getElementById(dayId);
             if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -615,7 +616,7 @@
 
         // --- Accounting ---
         const RATE = 0.215;
-        let expenses = JSON.parse(localStorage.getItem('osakaTripExpensesV5')) || [];
+        let expenses = JSON.parse(localStorage.getItem('osakaTripExpensesV6')) || [];
         function renderExpenses() {
             const list = document.getElementById('expense-list');
             const totalEl = document.getElementById('total-amount');
@@ -630,68 +631,10 @@
                 list.appendChild(li);
             });
             totalEl.innerText = `¥${total}`; totalTwdEl.innerText = Math.round(total * RATE);
-            localStorage.setItem('osakaTripExpensesV5', JSON.stringify(expenses));
+            localStorage.setItem('osakaTripExpensesV6', JSON.stringify(expenses));
         }
         function addExpense() {
             const name = document.getElementById('expense-name').value;
             const amount = document.getElementById('expense-price').value;
             const category = document.getElementById('expense-category').value;
-            if(name && amount) { expenses.push({ name, amount, category }); document.getElementById('expense-name').value = ''; document.getElementById('expense-price').value = ''; renderExpenses(); }
-        }
-        function deleteExpense(index) { if(confirm('刪除？')) { expenses.splice(index, 1); renderExpenses(); } }
-        renderExpenses();
-
-        let shopList = JSON.parse(localStorage.getItem('osakaShopListV5')) || [];
-        function renderShopList() {
-            const grid = document.getElementById('shop-grid');
-            grid.innerHTML = '';
-            shopList.forEach((item, idx) => {
-                const div = document.createElement('div');
-                div.className = 'shop-item bg-white rounded-xl shadow-sm border border-gray-100 p-3';
-                const imgHTML = item.img ? `<div class="shop-img-box mb-3"><img src="${item.img}" class="shop-img"></div>` : `<div class="shop-img-box mb-3 flex items-center justify-center text-gray-300 bg-gray-50"><i class="fa-solid fa-image text-2xl"></i></div>`;
-                div.innerHTML = `${imgHTML}<div class="font-bold text-coffee-text text-sm truncate">${item.name}</div><div class="text-xs text-gray-400 mb-2 truncate">${item.desc}</div><button onclick="deleteShopItem(${idx})" class="w-full py-1.5 bg-gray-50 text-gray-400 text-xs rounded hover:bg-red-50 hover:text-red-400 transition-colors"><i class="fa-solid fa-trash-can"></i></button>`;
-                grid.appendChild(div);
-            });
-            localStorage.setItem('osakaShopListV5', JSON.stringify(shopList));
-        }
-        function saveShopItem() {
-            const name = document.getElementById('shop-name').value;
-            const desc = document.getElementById('shop-desc').value;
-            const fileInput = document.getElementById('shop-file');
-            if(!name) return;
-            if(fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) { shopList.push({ name, desc, img: e.target.result }); closeModal(); renderShopList(); }
-                reader.readAsDataURL(fileInput.files[0]);
-            } else { shopList.push({ name, desc, img: null }); closeModal(); renderShopList(); }
-        }
-        function deleteShopItem(idx) { if(confirm('刪除？')) { shopList.splice(idx, 1); renderShopList(); } }
-        renderShopList();
-
-        function convertCurrency(type) {
-            const jpyInput = document.getElementById('conv-jpy');
-            const twdInput = document.getElementById('conv-twd');
-            if(type === 'jpy') { twdInput.value = Math.round(jpyInput.value * RATE); } else { jpyInput.value = Math.round(twdInput.value / RATE); }
-        }
-
-        const items = [
-            '護照', 'VJW 截圖', '網卡/eSIM', '日幣現金', '信用卡 (海外回饋)', '提款卡 (開通跨國)',
-            '手機', '充電器/線', '行動電源', '萬用轉接頭', 'Wifi機 (如有)',
-            '牙刷/牙膏', '洗面乳/卸妝', '保養品/化妝品', '毛巾/浴巾', '刮鬍刀', '生理用品', '隱形眼鏡/藥水',
-            '換洗衣物 (4套)', '睡衣', '內衣褲/襪子', '外套/保暖衣物', '好走的鞋子', '拖鞋', '帽子/墨鏡',
-            '常備藥 (感冒/腸胃)', 'OK繃', '個人藥品', '口罩', '乾洗手/濕紙巾',
-            '雨傘/雨衣', '環保袋', '筆/筆記本', '行程表影本', '耳環/飾品', '離子夾/電棒', '隨身小電風扇', '防蚊液'
-        ];
-        const checklistContainer = document.getElementById('checklist-container');
-        let checkedState = JSON.parse(localStorage.getItem('osakaChecklistLongV5')) || {};
-        items.forEach((item, idx) => {
-            const isChecked = checkedState[item] ? 'checked' : '';
-            const div = document.createElement('div');
-            div.className = 'flex items-center p-2 border-b border-gray-50 last:border-0';
-            div.innerHTML = `<input type="checkbox" id="check-${idx}" class="w-4 h-4 accent-latte-primary rounded cursor-pointer" ${isChecked} onchange="toggleCheck('${item}')"><label for="check-${idx}" class="ml-3 text-[13px] text-coffee-text cursor-pointer flex-1 ${isChecked ? 'line-through text-gray-300' : ''}">${item}</label>`;
-            checklistContainer.appendChild(div);
-        });
-        function toggleCheck(item) { checkedState[item] = !checkedState[item]; localStorage.setItem('osakaChecklistLongV5', JSON.stringify(checkedState)); }
-    </script>
-</body>
-</html>
+            if(name && amount) { expenses.push({ name, amount, category }); document.getElementById('expense-name').value = ''; document.getElementById('expense-price').value
