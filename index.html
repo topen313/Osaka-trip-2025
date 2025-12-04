@@ -47,33 +47,33 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         /* Sidebar */
-        .sidebar-nav { width: 70px; background-color: #F9F8F6; border-right: 1px solid #E8E4D9; display: flex; flex-direction: column; align-items: center; padding-top: 20px; flex-shrink: 0; z-index: 50; overflow-y: auto; }
-        .main-content { flex: 1; overflow-y: auto; padding: 16px; position: relative; background-color: #FDFCF8; scroll-behavior: smooth; width: 100%; }
+        .sidebar-nav { width: 80px; background-color: #F9F8F6; border-right: 1px solid #E8E4D9; display: flex; flex-direction: column; align-items: center; padding-top: 20px; flex-shrink: 0; z-index: 50; overflow-y: auto; }
+        .main-content { flex: 1; overflow-y: auto; padding: 20px; position: relative; background-color: #FDFCF8; scroll-behavior: smooth; }
 
         /* Tabs */
         .nav-tab {
-            width: 46px; height: 46px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            margin-bottom: 12px; border-radius: 12px; font-weight: bold; font-size: 14px; color: #A89F91; transition: all 0.2s; cursor: pointer;
+            width: 50px; height: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            margin-bottom: 10px; border-radius: 12px; font-weight: bold; font-size: 14px; color: #A89F91; transition: all 0.2s; cursor: pointer;
         }
         .nav-tab:hover { background-color: #F0EBE5; }
         .nav-tab.active { background-color: #4A3B32; color: #FFFFFF; box-shadow: 0 4px 10px rgba(74, 59, 50, 0.2); }
-        .nav-tab-date { font-size: 9px; font-weight: normal; margin-top: -2px; }
+        .nav-tab-date { font-size: 10px; font-weight: normal; margin-top: -2px; }
         
         /* Separator */
-        .nav-separator { width: 30px; height: 2px; background-color: #E8E4D9; margin: 5px 0 15px 0; border-radius: 2px; }
+        .nav-separator { width: 40px; height: 2px; background-color: #E8E4D9; margin: 10px 0 16px 0; border-radius: 2px; }
 
         /* Functional Tabs */
         .nav-func {
-            width: 46px; height: 46px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            width: 50px; height: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center;
             margin-bottom: 10px; border-radius: 12px; color: #A89F91; transition: all 0.2s; cursor: pointer; font-size: 10px; font-weight: bold;
         }
-        .nav-func i { font-size: 18px; margin-bottom: 2px; }
-        .nav-func.active { background-color: #A89F91; color: white; }
+        .nav-func i { font-size: 20px; margin-bottom: 4px; }
+        .nav-func.active { background-color: #A89F91; color: white; box-shadow: 0 4px 10px rgba(168, 159, 145, 0.4); }
 
         /* Header */
         .app-header {
             position: sticky; top: 0; z-index: 40; background-color: rgba(253, 252, 248, 0.95); backdrop-filter: blur(5px);
-            margin-left: -16px; margin-right: -16px; padding: 10px 16px; margin-bottom: 20px; border-bottom: 1px solid #f3f4f6;
+            margin-left: -20px; margin-right: -20px; padding: 10px 20px; margin-bottom: 20px; border-bottom: 1px solid #f3f4f6;
             display: flex; justify-content: space-between; align-items: center;
         }
 
@@ -120,14 +120,14 @@
         .shop-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
         
         /* App Circle Icons */
-        .app-circle-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+        .app-circle-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
         .app-link-item { display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none; }
         .app-icon-circle { 
-            width: 50px; height: 50px; border-radius: 18px; display: flex; align-items: center; justify-content: center; 
-            font-size: 22px; box-shadow: 0 2px 8px rgba(74, 59, 50, 0.08); transition: transform 0.1s; background-color: white; border: 1px solid #E8E4D9;
+            width: 56px; height: 56px; border-radius: 20px; display: flex; align-items: center; justify-content: center; 
+            font-size: 24px; box-shadow: 0 4px 12px rgba(74, 59, 50, 0.08); transition: transform 0.1s; background-color: white; border: 1px solid #E8E4D9;
         }
         .app-link-item:active .app-icon-circle { transform: scale(0.95); background-color: #F5F3EF; }
-        .app-label { font-size: 11px; color: #4A3B32; font-weight: 600; text-align: center; }
+        .app-label { font-size: 12px; color: #4A3B32; font-weight: 600; text-align: center; }
 
         .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(74, 59, 50, 0.4); backdrop-filter: blur(2px); align-items: center; justify-content: center; }
         .modal.show { display: flex; }
@@ -167,7 +167,7 @@
             
             <h1 class="text-2xl font-bold text-coffee-text tracking-wide mb-6 pt-2">大阪六日遊行程 🍁</h1>
 
-            <section class="mb-8 w-full">
+            <section class="mb-8 max-w-lg mx-auto">
                 <div class="bg-pale-red border border-pale-red-border rounded-xl overflow-hidden shadow-sm">
                     <div class="collapsible-header p-4 flex justify-between items-center bg-pale-red" onclick="toggleCollapse('jr-collapse')">
                         <div class="flex items-center">
@@ -191,7 +191,7 @@
                 </div>
             </section>
 
-            <div class="w-full pb-24">
+            <div class="max-w-lg mx-auto pb-24">
                 
                 <div id="day-1" class="day-container mb-12">
                     <div class="day-header first">
@@ -276,7 +276,10 @@
                         </div>
                         <div class="flex gap-4 mb-2 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">21:00</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card"><h4 class="text-card-title font-bold text-coffee-text">Grilled Yakitori Tokoha Namba</h4></div>
+                            <div class="flex-1 creamy-card flex justify-between items-center">
+                                <div><h4 class="text-card-title font-bold text-coffee-text">Grilled Yakitori Tokoha</h4></div>
+                                <a href="https://maps.app.goo.gl/o55SXECsH4qNS5TJA" target="_blank" class="nav-arrow"><i class="fa-solid fa-utensils"></i></a>
+                            </div>
                         </div>
                     </div>
                     <div class="flex justify-center mt-6"><a href="https://www.google.com/maps/search/?api=1&query=Hotel+Abitare+Namba+West" target="_blank" class="btn-hotel"><i class="fa-solid fa-bed"></i> 返回飯店</a></div>
@@ -297,25 +300,37 @@
 
                         <div class="flex gap-4 mb-2 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">11:00</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">天橋立觀光船 → 一宮</h4><p class="text-card-body text-gray-500 mt-1">11:00 - 11:12</p></div></div>
+                            <div class="flex-1 creamy-card flex justify-between items-center">
+                                <div><h4 class="text-card-title font-bold text-coffee-text">天橋立觀光船 → 一宮</h4><p class="text-card-body text-gray-500 mt-1">11:00 - 11:12</p></div>
+                                <a href="https://maps.app.goo.gl/b5STE6kvvpKKBzYb9" target="_blank" class="nav-arrow"><i class="fa-solid fa-ship"></i></a>
+                            </div>
                         </div>
-                        <div class="transport-text"><span class="font-bold mr-2">11:24</span> 【丹海巴士】<br>天橋立元伊勢籠神社→伊根</div>
+                        <div class="transport-text">
+                            <span class="font-bold mr-2">11:24</span> 【丹海巴士】<br>天橋立元伊勢籠神社→伊根
+                            <a href="https://www.google.com/maps/search/?api=1&query=Motoise+Kono+Shrine" target="_blank" class="ml-2 text-blue-500"><i class="fa-solid fa-map-pin"></i> 站牌</a>
+                        </div>
                         <div class="flex gap-4 mb-2 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">12:00</span><div class="timeline-dot"></div></div>
                             <div class="flex-1 creamy-card flex justify-between items-center">
                                 <div>
                                     <h4 class="text-card-title font-bold text-coffee-text">伊根舟屋食堂</h4>
-                                    <p class="text-card-body text-gray-500 mt-1">餐後推薦：INE CAFE / 舟屋散策</p>
+                                    <p class="text-card-body text-gray-500 mt-1">推薦：INE CAFE / 舟屋散策</p>
                                 </div>
-                                <a href="https://www.google.com/maps/search/?api=1&query=INE+CAFE" target="_blank" class="nav-arrow"><i class="fa-solid fa-location-arrow"></i></a>
+                                <a href="https://maps.app.goo.gl/eFec6NBgDwn6GZeP8" target="_blank" class="nav-arrow"><i class="fa-solid fa-utensils"></i></a>
                             </div>
                         </div>
-                        <div class="transport-text"><span class="font-bold mr-2">13:33</span> 【丹海巴士】<br>伊根→伊根灣巡游觀光船日出站</div>
+                        <div class="transport-text">
+                            <span class="font-bold mr-2">13:33</span> 【丹海巴士】<br>伊根→伊根灣巡游觀光船日出站
+                            <a href="https://www.google.com/maps/search/?api=1&query=Ine+Bay+Sightseeing+Boat" target="_blank" class="ml-2 text-blue-500"><i class="fa-solid fa-map-pin"></i> 站牌</a>
+                        </div>
                         <div class="flex gap-4 mb-2 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">14:00</span><div class="timeline-dot"></div></div>
                             <div class="flex-1 creamy-card"><h4 class="text-card-title font-bold text-coffee-text">伊根觀光船餵海鷗</h4></div>
                         </div>
-                        <div class="transport-text"><span class="font-bold mr-2">14:46</span> 【丹海巴士】<br>日出站→天橋立纜車</div>
+                        <div class="transport-text">
+                            <span class="font-bold mr-2">14:46</span> 【丹海巴士】<br>日出站→天橋立纜車
+                            <a href="https://www.google.com/maps/search/?api=1&query=Amanohashidate+Cable+Car+Fuchu+Station" target="_blank" class="ml-2 text-blue-500"><i class="fa-solid fa-map-pin"></i> 站牌</a>
+                        </div>
                         <div class="flex gap-4 mb-2 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">15:13</span><div class="timeline-dot"></div></div>
                             <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">傘松公園纜車</h4><p class="text-card-body text-gray-500 mt-1">股觀 (看龍飛升)</p></div><a href="https://www.google.com/maps/search/?api=1&query=Kasamatsu+Park+Cable+Car" target="_blank" class="nav-arrow"><i class="fa-solid fa-mountain-sun"></i></a></div>
@@ -364,11 +379,17 @@
                         </div>
                         <div class="flex gap-4 mb-4 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">下午</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">難波八阪神社</h4><p class="text-card-body text-gray-500 mt-1">獅子頭狗狗寺</p></div><a href="https://www.google.com/maps/search/?api=1&query=Shipporyuji+Temple" target="_blank" class="nav-arrow"><i class="fa-solid fa-dog"></i></a></div>
+                            <div class="flex-1 creamy-card flex justify-between items-center">
+                                <div><h4 class="text-card-title font-bold text-coffee-text">御津八幡宮 (美國村)</h4><p class="text-card-body text-gray-500 mt-1">祈求藝術/文化</p></div>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Mitsu+Hachimangu+Osaka" target="_blank" class="nav-arrow"><i class="fa-solid fa-torii-gate"></i></a>
+                            </div>
                         </div>
                         <div class="flex gap-4 mb-6 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">18:00</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">Tonkatsu New Babe Namba</h4></div><a href="https://www.google.com/maps/search/?api=1&query=New+Babe+Pork+Cutlet" target="_blank" class="nav-arrow"><i class="fa-solid fa-utensils"></i></a></div>
+                            <div class="flex-1 creamy-card flex justify-between items-center">
+                                <div><h4 class="text-card-title font-bold text-coffee-text">Tonkatsu New Babe Namba</h4></div>
+                                <a href="https://maps.app.goo.gl/GouzanHKoa5ZxuUu5" target="_blank" class="nav-arrow"><i class="fa-solid fa-utensils"></i></a>
+                            </div>
                         </div>
                     </div>
                     <div class="flex justify-center mt-6"><a href="https://www.google.com/maps/search/?api=1&query=Hotel+Abitare+Namba+West" target="_blank" class="btn-hotel"><i class="fa-solid fa-bed"></i> 返回飯店</a></div>
