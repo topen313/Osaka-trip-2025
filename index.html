@@ -114,12 +114,7 @@
         .day-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-top: 20px; border-top: 1px dashed #E8E4D9; }
         .day-header.first { border-top: none; padding-top: 0; }
 
-        /* Grid */
-        .shop-item { position: relative; overflow: hidden; }
-        .shop-img-box { width: 100%; padding-top: 100%; position: relative; background: #f3f4f6; border-radius: 8px; overflow: hidden; }
-        .shop-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-        
-        /* App Circle Icons */
+        /* App Grid (Circle Icons) */
         .app-circle-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
         .app-link-item { display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none; }
         .app-icon-circle { 
@@ -129,6 +124,11 @@
         .app-link-item:active .app-icon-circle { transform: scale(0.95); background-color: #F5F3EF; }
         .app-label { font-size: 12px; color: #4A3B32; font-weight: 600; text-align: center; }
 
+        /* Grid for Shopping */
+        .shop-item { position: relative; overflow: hidden; }
+        .shop-img-box { width: 100%; padding-top: 100%; position: relative; background: #f3f4f6; border-radius: 8px; overflow: hidden; }
+        .shop-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        
         .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(74, 59, 50, 0.4); backdrop-filter: blur(2px); align-items: center; justify-content: center; }
         .modal.show { display: flex; }
     </style>
@@ -307,7 +307,7 @@
                         </div>
                         <div class="transport-text">
                             <span class="font-bold mr-2">11:24</span> 【丹海巴士】<br>天橋立元伊勢籠神社→伊根
-                            <a href="https://www.google.com/maps/search/?api=1&query=Motoise+Kono+Shrine" target="_blank" class="ml-2 text-blue-500"><i class="fa-solid fa-map-pin"></i> 站牌</a>
+                            <a href="https://www.google.com/maps/search/元伊勢籠神社" target="_blank" class="ml-2 text-blue-500"><i class="fa-solid fa-map-pin"></i> 站牌</a>
                         </div>
                         <div class="flex gap-4 mb-2 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">12:00</span><div class="timeline-dot"></div></div>
@@ -321,7 +321,7 @@
                         </div>
                         <div class="transport-text">
                             <span class="font-bold mr-2">13:33</span> 【丹海巴士】<br>伊根→伊根灣巡游觀光船日出站
-                            <a href="https://www.google.com/maps/search/?api=1&query=Ine+Bay+Sightseeing+Boat" target="_blank" class="ml-2 text-blue-500"><i class="fa-solid fa-map-pin"></i> 站牌</a>
+                            <a href="https://www.google.com/maps/search/伊根湾めぐり・日出" target="_blank" class="ml-2 text-blue-500"><i class="fa-solid fa-map-pin"></i> 站牌</a>
                         </div>
                         <div class="flex gap-4 mb-2 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">14:00</span><div class="timeline-dot"></div></div>
@@ -329,13 +329,15 @@
                         </div>
                         <div class="transport-text">
                             <span class="font-bold mr-2">14:46</span> 【丹海巴士】<br>日出站→天橋立纜車
-                            <a href="https://www.google.com/maps/search/?api=1&query=Amanohashidate+Cable+Car+Fuchu+Station" target="_blank" class="ml-2 text-blue-500"><i class="fa-solid fa-map-pin"></i> 站牌</a>
+                            <a href="https://www.google.com/maps/search/伊根湾めぐり・日出" target="_blank" class="ml-2 text-blue-500"><i class="fa-solid fa-map-pin"></i> 站牌</a>
                         </div>
                         <div class="flex gap-4 mb-2 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">15:13</span><div class="timeline-dot"></div></div>
                             <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">傘松公園纜車</h4><p class="text-card-body text-gray-500 mt-1">股觀 (看龍飛升)</p></div><a href="https://www.google.com/maps/search/?api=1&query=Kasamatsu+Park+Cable+Car" target="_blank" class="nav-arrow"><i class="fa-solid fa-mountain-sun"></i></a></div>
                         </div>
-                        <div class="transport-text">16:15 天橋立觀光船到天橋立車站</div>
+                        <div class="transport-text">16:15 一宮棧橋(傘松公園)➔天橋立棧橋
+                             <a href="https://www.google.com/maps/search/天橋立観光船+一の宮駅" target="_blank" class="ml-2 text-blue-500"><i class="fa-solid fa-map-pin"></i> 棧橋</a>
+                        </div>
                         <div class="flex gap-4 mb-2 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">16:27</span><div class="timeline-dot"></div></div>
                             <div class="flex-1 creamy-card">
@@ -379,17 +381,11 @@
                         </div>
                         <div class="flex gap-4 mb-4 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">下午</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center">
-                                <div><h4 class="text-card-title font-bold text-coffee-text">御津八幡宮 (美國村)</h4><p class="text-card-body text-gray-500 mt-1">祈求藝術/文化</p></div>
-                                <a href="https://www.google.com/maps/search/?api=1&query=Mitsu+Hachimangu+Osaka" target="_blank" class="nav-arrow"><i class="fa-solid fa-torii-gate"></i></a>
-                            </div>
+                            <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">御津八幡宮 (美國村)</h4><p class="text-card-body text-gray-500 mt-1">祈求藝術/文化</p></div><a href="https://www.google.com/maps/search/?api=1&query=Mitsu+Hachimangu+Osaka" target="_blank" class="nav-arrow"><i class="fa-solid fa-torii-gate"></i></a></div>
                         </div>
                         <div class="flex gap-4 mb-6 relative">
                             <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">18:00</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center">
-                                <div><h4 class="text-card-title font-bold text-coffee-text">Tonkatsu New Babe Namba</h4></div>
-                                <a href="https://maps.app.goo.gl/GouzanHKoa5ZxuUu5" target="_blank" class="nav-arrow"><i class="fa-solid fa-utensils"></i></a>
-                            </div>
+                            <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">Tonkatsu New Babe Namba</h4></div><a href="https://maps.app.goo.gl/GouzanHKoa5ZxuUu5" target="_blank" class="nav-arrow"><i class="fa-solid fa-utensils"></i></a></div>
                         </div>
                     </div>
                     <div class="flex justify-center mt-6"><a href="https://www.google.com/maps/search/?api=1&query=Hotel+Abitare+Namba+West" target="_blank" class="btn-hotel"><i class="fa-solid fa-bed"></i> 返回飯店</a></div>
@@ -445,12 +441,12 @@
                         </select>
                     </div>
                     <div class="flex-1">
-                        <input type="text" id="expense-name" placeholder="品項名稱" class="w-full bg-gray-50 rounded-lg px-3 py-3 text-sm outline-none border border-gray-100">
+                        <input type="number" id="expense-price" placeholder="金額 (JPY)" class="w-full bg-gray-50 rounded-lg px-3 py-3 text-sm outline-none border border-gray-100">
                     </div>
                 </div>
                 <div class="flex gap-3">
                     <div class="flex-1">
-                        <input type="number" id="expense-price" placeholder="金額 (JPY)" class="w-full bg-gray-50 rounded-lg px-3 py-3 text-sm outline-none border border-gray-100">
+                        <input type="text" id="expense-name" placeholder="品項名稱" class="w-full bg-gray-50 rounded-lg px-3 py-3 text-sm outline-none border border-gray-100">
                     </div>
                     <button onclick="addExpense()" class="bg-coffee-text text-white w-20 rounded-lg text-sm font-bold active:scale-95 transition-transform flex-none">新增</button>
                 </div>
@@ -511,7 +507,7 @@
             <input type="text" id="shop-desc" placeholder="規格/價格" class="w-full bg-gray-50 p-3 rounded-lg mb-3 border border-gray-100 outline-none">
             <div class="mb-4">
                 <label class="block text-xs text-gray-400 mb-2">圖片 (選填)</label>
-                <input type="file" id="shop-file" accept="image/*" class="text-xs text-gray-500">
+                <input type="file" id="shop-file" accept="image/*" class="text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-xs file:bg-latte-light file:text-coffee-text">
             </div>
             <div class="flex gap-2">
                 <button onclick="closeModal()" class="flex-1 py-2 rounded-lg bg-gray-100 text-gray-500 font-bold">取消</button>
@@ -571,7 +567,7 @@
                 total += parseInt(item.amount);
                 const li = document.createElement('li');
                 li.className = 'bg-white p-3 rounded-lg border border-gray-100 flex justify-between items-center text-sm shadow-sm';
-                li.innerHTML = `<div class="flex items-center truncate flex-1 min-w-0"><span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded mr-2 flex-shrink-0">${item.category}</span><span class="text-coffee-text truncate">${item.name}</span></div><div class="flex items-center flex-shrink-0 ml-2"><span class="font-bold text-coffee-text mr-3">¥${item.amount}</span><button onclick="deleteExpense(${expenses.length - 1 - index})" class="text-gray-300 hover:text-red-400"><i class="fa-solid fa-trash-can"></i></button></div>`;
+                li.innerHTML = `<div class="flex items-center truncate"><span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded mr-2">${item.category}</span><span class="text-coffee-text truncate">${item.name}</span></div><div class="flex items-center flex-shrink-0 ml-2"><span class="font-bold text-coffee-text mr-3">¥${item.amount}</span><button onclick="deleteExpense(${expenses.length - 1 - index})" class="text-gray-300 hover:text-red-400"><i class="fa-solid fa-trash-can"></i></button></div>`;
                 list.appendChild(li);
             });
             totalEl.innerText = `¥${total}`; totalTwdEl.innerText = Math.round(total * RATE);
