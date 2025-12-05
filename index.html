@@ -1,618 +1,252 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>大阪六日遊行程</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>關西六日遊 (12/9 - 12/14)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'milk-base': '#FDFCF8',
-                        'coffee-text': '#4A3B32',
-                        'coffee-dark': '#3E2F28',
-                        'latte-primary': '#A89F91',
-                        'latte-light': '#E8E4D9',
-                        'cream-card': '#FFFFFF',
-                        'pale-red': '#FEF2F2',
-                        'pale-red-border': '#FECACA',
-                        'weather-sunny': '#FFFBEB',
-                        'weather-cloudy': '#F3F4F6',
-                        'weather-cold': '#EFF6FF',
-                        'pastel-pink': '#FFF1F2',
-                        'pastel-orange': '#FFF7ED',
-                        'pastel-green': '#F0FDF4',
-                        'pastel-blue': '#EFF6FF',
-                        'pastel-purple': '#FAF5FF',
-                        'pastel-gray': '#F9FAFB',
-                    },
-                    fontSize: {
-                        'card-title': '16px',
-                        'card-body': '15px',
-                        'weather-lg': '24px',
-                    },
-                    boxShadow: {
-                        'card': '0 4px 20px -2px rgba(74, 59, 50, 0.08)',
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #FDFCF8; color: #4A3B32; -webkit-tap-highlight-color: transparent; display: flex; height: 100vh; overflow: hidden; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Sidebar */
-        .sidebar-nav { width: 80px; background-color: #F9F8F6; border-right: 1px solid #E8E4D9; display: flex; flex-direction: column; align-items: center; padding-top: 20px; flex-shrink: 0; z-index: 50; overflow-y: auto; }
-        .main-content { flex: 1; overflow-y: auto; padding: 20px; position: relative; background-color: #FDFCF8; scroll-behavior: smooth; }
-
-        /* Tabs */
-        .nav-tab {
-            width: 50px; height: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            margin-bottom: 10px; border-radius: 12px; font-weight: bold; font-size: 14px; color: #A89F91; transition: all 0.2s; cursor: pointer;
-        }
-        .nav-tab:hover { background-color: #F0EBE5; }
-        .nav-tab.active { background-color: #4A3B32; color: #FFFFFF; box-shadow: 0 4px 10px rgba(74, 59, 50, 0.2); }
-        .nav-tab-date { font-size: 10px; font-weight: normal; margin-top: -2px; }
-        
-        /* Separator */
-        .nav-separator { width: 40px; height: 2px; background-color: #E8E4D9; margin: 10px 0 16px 0; border-radius: 2px; }
-
-        /* Functional Tabs */
-        .nav-func {
-            width: 50px; height: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            margin-bottom: 10px; border-radius: 12px; color: #A89F91; transition: all 0.2s; cursor: pointer; font-size: 10px; font-weight: bold;
-        }
-        .nav-func i { font-size: 20px; margin-bottom: 4px; }
-        .nav-func.active { background-color: #A89F91; color: white; box-shadow: 0 4px 10px rgba(168, 159, 145, 0.4); }
-
-        /* Header */
-        .app-header {
-            position: sticky; top: 0; z-index: 40; background-color: rgba(253, 252, 248, 0.95); backdrop-filter: blur(5px);
-            margin-left: -20px; margin-right: -20px; padding: 10px 20px; margin-bottom: 20px; border-bottom: 1px solid #f3f4f6;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-
-        /* Views */
-        .view-section { display: none; animation: fadeIn 0.3s ease; }
-        .view-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Timeline & Cards */
-        .timeline-line-vertical { position: absolute; left: 19px; top: 10px; bottom: -10px; width: 2px; background-color: #E8E4D9; z-index: 0; }
-        .timeline-dot { width: 12px; height: 12px; border-radius: 50%; background-color: #A89F91; border: 2px solid #FDFCF8; z-index: 10; position: relative; box-shadow: 0 0 0 1px #E8E4D9; }
-        .timeline-dot.active { background-color: #4A3B32; }
-        .timeline-dot.transport { background-color: #9CA3AF; width: 8px; height: 8px; left: 2px; border: none; box-shadow: none; }
-        
-        .creamy-card { 
-            background-color: #FFFFFF; border-radius: 16px; padding: 16px; 
-            box-shadow: 0 4px 20px -2px rgba(74, 59, 50, 0.08); transition: transform 0.1s; position: relative; border: 1px solid rgba(168, 159, 145, 0.1);
-        }
-        .creamy-card:active { transform: scale(0.98); }
-        .nav-arrow { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background-color: #F5F3EF; color: #4A3B32; font-size: 14px; }
-        
-        /* Hotel Button */
-        .btn-hotel { font-size: 14px; padding: 10px 20px; border-radius: 30px; font-weight: 600; background-color: #3E2F28; color: white; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(74, 59, 50, 0.3); transition: opacity 0.2s; }
-        .btn-hotel:active { opacity: 0.8; }
-
-        /* Text & Layout */
-        .transport-text { font-size: 13px; color: #8C8C8C; padding: 10px 0; margin-left: 48px; position: relative; display: flex; align-items: center; flex-wrap: wrap; }
-        .transport-text::before { content: ''; position: absolute; left: -29px; top: 50%; width: 6px; height: 6px; background-color: #E8E4D9; border-radius: 50%; transform: translateY(-50%); }
-        .weather-capsule { display: inline-flex; align-items: center; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 13px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); margin-left: 48px; margin-bottom: 16px; border: 1px solid rgba(0,0,0,0.05); }
-        .shop-btn { display: flex; align-items: center; justify-content: space-between; background: #F9F8F6; padding: 12px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #E8E4D9; }
-
-        /* Collapsible */
-        .collapsible-header { cursor: pointer; user-select: none; }
-        .collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
-        .collapsible-content.open { max-height: 500px; }
-
-        /* Day Headers */
-        .day-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-top: 20px; border-top: 1px dashed #E8E4D9; }
-        .day-header.first { border-top: none; padding-top: 0; }
-
-        /* App Grid (Circle Icons) */
-        .app-circle-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-        .app-link-item { display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none; }
-        .app-icon-circle { 
-            width: 56px; height: 56px; border-radius: 20px; display: flex; align-items: center; justify-content: center; 
-            font-size: 24px; box-shadow: 0 4px 12px rgba(74, 59, 50, 0.08); transition: transform 0.1s; background-color: white; border: 1px solid #E8E4D9;
-        }
-        .app-link-item:active .app-icon-circle { transform: scale(0.95); background-color: #F5F3EF; }
-        .app-label { font-size: 12px; color: #4A3B32; font-weight: 600; text-align: center; }
-
-        /* Grid for Shopping */
-        .shop-item { position: relative; overflow: hidden; }
-        .shop-img-box { width: 100%; padding-top: 100%; position: relative; background: #f3f4f6; border-radius: 8px; overflow: hidden; }
-        .shop-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-        
-        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(74, 59, 50, 0.4); backdrop-filter: blur(2px); align-items: center; justify-content: center; }
-        .modal.show { display: flex; }
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f3f4f6; padding-bottom: 80px; }
+        .day-header { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        .day-header-special { background: linear-gradient(135deg, #4c1d95 0%, #8b5cf6 100%); }
+        .tag-transport { background-color: #e5e7eb; color: #374151; font-size: 0.85rem; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 4px; }
+        .tag-food { background-color: #fee2e2; color: #991b1b; font-weight: bold; padding: 2px 8px; border-radius: 4px; }
+        .tag-time { color: #d97706; font-weight: bold; }
+        .highlight-box { border-left: 4px solid #3b82f6; background-color: #eff6ff; padding: 10px; margin-top: 8px; }
     </style>
 </head>
-<body class="bg-milk-base">
+<body class="bg-gray-50">
 
-    <nav class="sidebar-nav">
-        <div class="mb-6 w-10 h-10 rounded-full bg-latte-light flex items-center justify-center text-coffee-text shadow-sm">
-            <i class="fa-solid fa-leaf text-sm"></i>
-        </div>
-
-        <div onclick="showItinerary('all')" class="nav-tab active" id="tab-all">ALL</div>
-        <div onclick="scrollToDay('day-1')" class="nav-tab" id="tab-day-1">D1<span class="nav-tab-date">12/9</span></div>
-        <div onclick="scrollToDay('day-2')" class="nav-tab" id="tab-day-2">D2<span class="nav-tab-date">12/10</span></div>
-        <div onclick="scrollToDay('day-3')" class="nav-tab" id="tab-day-3">D3<span class="nav-tab-date">12/11</span></div>
-        <div onclick="scrollToDay('day-4')" class="nav-tab" id="tab-day-4">D4<span class="nav-tab-date">12/12</span></div>
-        <div onclick="scrollToDay('day-5')" class="nav-tab" id="tab-day-5">D5<span class="nav-tab-date">12/13</span></div>
-        <div onclick="scrollToDay('day-6')" class="nav-tab" id="tab-day-6">D6<span class="nav-tab-date">12/14</span></div>
-
-        <div class="nav-separator"></div>
-
-        <div onclick="switchPage('page-accounting')" class="nav-func" id="nav-accounting">
-            <i class="fa-solid fa-wallet"></i><span>記帳</span>
-        </div>
-        <div onclick="switchPage('page-shopping')" class="nav-func" id="nav-shopping">
-            <i class="fa-solid fa-bag-shopping"></i><span>購物</span>
-        </div>
-        <div onclick="switchPage('page-info')" class="nav-func" id="nav-info">
-            <i class="fa-solid fa-circle-info"></i><span>資訊</span>
-        </div>
-    </nav>
-
-    <main class="main-content no-scrollbar" id="main-scroll">
-
-        <div id="page-itinerary" class="view-section active">
-            
-            <h1 class="text-2xl font-bold text-coffee-text tracking-wide mb-6 pt-2">大阪六日遊行程 🍁</h1>
-
-            <section class="mb-8 max-w-lg mx-auto">
-                <div class="bg-pale-red border border-pale-red-border rounded-xl overflow-hidden shadow-sm">
-                    <div class="collapsible-header p-4 flex justify-between items-center bg-pale-red" onclick="toggleCollapse('jr-collapse')">
-                        <div class="flex items-center">
-                            <i class="fa-solid fa-ticket text-red-500 mr-2 text-lg"></i>
-                            <h3 class="font-bold text-[16px] text-red-800">⚠️ 必做：JR 指定席劃位</h3>
-                        </div>
-                        <i class="fa-solid fa-chevron-down text-red-400 transition-transform" id="jr-collapse-icon"></i>
-                    </div>
-                    <div id="jr-collapse" class="collapsible-content">
-                        <div class="p-4 pt-0 border-t border-pale-red-border bg-pale-red">
-                            <p class="text-xs text-red-700 mb-2 font-bold">建議 12/9 抵達機場時一次劃好：</p>
-                            <ul class="text-[13px] text-red-800 space-y-1.5 list-disc pl-4 font-medium leading-relaxed">
-                                <li>12/12 去程 08:14 大阪→福知山 (特急 Kounotori)</li>
-                                <li>12/12 去程 09:59 福知山→天橋立 (特急 Hashidate)</li>
-                                <li>12/12 回程 18:09 天橋立→京都 (特急 Hashidate)</li>
-                                <li>12/12 回程 20:30 京都→天王寺 (特急 Haruka)</li>
-                                <li>12/14 回程 難波→機場 (Haruka)</li>
-                            </ul>
-                        </div>
-                    </div>
+    <div class="bg-slate-900 text-white shadow-md sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto p-4">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-2">
+                <h1 class="text-xl font-bold"><i class="fas fa-plane-departure mr-2"></i>關西六日遊 12/9-14</h1>
+                <div class="flex items-center space-x-2 mt-2 md:mt-0 bg-slate-800 p-1.5 rounded-lg">
+                    <span class="text-xs text-gray-400">匯率:</span>
+                    <input type="number" id="rateInput" value="0.22" class="w-12 text-center text-black rounded text-sm h-6" step="0.01" onchange="updateConverter()">
+                    <span class="text-gray-400">|</span>
+                    <input type="number" id="jpyInput" placeholder="¥ 日幣" class="w-20 text-center text-black rounded text-sm h-6" oninput="convertCurrency()">
+                    <i class="fas fa-arrow-right text-xs"></i>
+                    <span id="twdOutput" class="font-bold text-yellow-400 min-w-[50px] text-right">$ 0</span>
                 </div>
-            </section>
-
-            <div class="max-w-lg mx-auto pb-24">
-                
-                <div id="day-1" class="day-container mb-12">
-                    <div class="day-header first">
-                        <div><span class="bg-coffee-text text-white text-[10px] font-bold px-2 py-1 rounded">DAY 1</span><span class="text-[18px] font-bold text-coffee-text ml-2">12/9 (二) 抵達與逛街</span></div>
-                    </div>
-                    <div class="relative">
-                        <div class="timeline-line-vertical"></div>
-                        <div class="weather-capsule bg-weather-sunny text-orange-800 border border-orange-100"><i class="fa-solid fa-sun text-orange-400 mr-2"></i><span>晴時多雲 12°C</span></div>
-
-                        <div class="flex gap-4 mb-2 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">09:55</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">抵達關西機場 (BR178)</h4></div></div>
-                        </div>
-                        <div class="transport-text">🚇 南海電鐵 → 難波 <span class="text-xs ml-2 text-gray-400">(Rapi:t ¥1,490 / 空港急行 ¥970)</span></div>
-                        <div class="flex gap-4 mb-2 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">13:00</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">LIM 染髮 (預約)</h4><p class="text-card-body text-gray-500 mt-1">📍 LIM Hair Salon</p></div><a href="https://maps.app.goo.gl/Ve9fRxkkwVnR2DaY8" target="_blank" class="nav-arrow"><i class="fa-solid fa-location-arrow"></i></a></div>
-                        </div>
-                        <div class="transport-text">🚶 步行逛街</div>
-                        <div class="flex gap-4 mb-6 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">18:00</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">難波 & 心齋橋</h4><p class="text-card-body text-gray-500 mt-1">🛍️ 逛街購物</p></div><a href="https://www.google.com/maps/search/?api=1&query=Shinsaibashi" target="_blank" class="nav-arrow"><i class="fa-solid fa-location-arrow"></i></a></div>
-                        </div>
-                    </div>
-                    <div class="flex justify-center mt-6"><a href="https://www.google.com/maps/search/?api=1&query=Hotel+Abitare+Namba+West" target="_blank" class="btn-hotel"><i class="fa-solid fa-bed"></i> 返回飯店 (Abitare)</a></div>
-                </div>
-
-                <div id="day-2" class="day-container mb-12">
-                    <div class="day-header">
-                        <div><span class="bg-coffee-text text-white text-[10px] font-bold px-2 py-1 rounded">DAY 2</span><span class="text-[18px] font-bold text-coffee-text ml-2">12/10 (三) 環球影城</span></div>
-                    </div>
-                    <div class="relative">
-                        <div class="timeline-line-vertical"></div>
-                        <div class="weather-capsule bg-weather-cloudy text-gray-700 border border-gray-200"><i class="fa-solid fa-cloud-sun text-yellow-500 mr-2"></i><span>多雲時晴 11°C</span></div>
-
-                        <div class="flex gap-4 mb-6 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">08:30</span><div class="timeline-dot active"></div></div>
-                            <div class="flex-1 creamy-card">
-                                <div class="flex justify-between items-start mb-3"><h4 class="text-card-title font-bold text-coffee-text">USJ 大阪環球影城</h4><a href="https://www.google.com/maps/search/?api=1&query=Universal+Studios+Japan" target="_blank" class="nav-arrow"><i class="fa-solid fa-wand-magic-sparkles"></i></a></div>
-                                <div class="bg-[#F9F8F6] p-3 rounded-lg border border-latte-light text-[13px] text-coffee-text leading-relaxed"><p class="font-bold mb-1">🔥 逆時針 + 二刷任天堂攻略：</p><ul class="list-disc pl-4 space-y-1"><li>08:30 入園：直衝 <span class="font-bold text-red-600">飛天翼龍</span></li><li>12:50 (快速)：<span class="font-bold text-green-600">任天堂</span> (瑪利歐)</li><li>15:40 (快速)：<span class="font-bold text-blue-600">哈利波特</span> (禁忌之旅)</li><li>晚上：好萊塢美夢</li></ul></div>
-                            </div>
-                        </div>
-                        <div class="transport-text">🚇 環球城 → 西九條 → 櫻川站 <span class="text-xs ml-2 text-gray-400">(JR夢咲線 轉 阪神難波線 ¥390)</span></div>
-                        <div class="flex gap-4 mb-6 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">20:00</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">Sazare 大阪燒 (櫻川)</h4><p class="text-card-body text-gray-500 mt-1">📍 櫻川站附近</p></div><a href="https://www.google.com/maps/search/?api=1&query=Sazare+Osaka+Okonomiyaki" target="_blank" class="nav-arrow"><i class="fa-solid fa-utensils"></i></a></div>
-                        </div>
-                    </div>
-                    <div class="flex justify-center mt-6"><a href="https://www.google.com/maps/search/?api=1&query=Hotel+Abitare+Namba+West" target="_blank" class="btn-hotel"><i class="fa-solid fa-bed"></i> 返回飯店</a></div>
-                </div>
-
-                <div id="day-3" class="day-container mb-12">
-                    <div class="day-header">
-                        <div><span class="bg-coffee-text text-white text-[10px] font-bold px-2 py-1 rounded">DAY 3</span><span class="text-[18px] font-bold text-coffee-text ml-2">12/11 (四) 箕面勝運</span></div>
-                    </div>
-                    <div class="relative">
-                        <div class="timeline-line-vertical"></div>
-                        <div class="weather-capsule bg-weather-cold text-blue-800 border border-blue-100"><i class="fa-solid fa-snowflake text-blue-400 mr-2"></i><span>寒冷有雪 10°C</span></div>
-
-                        <div class="transport-text !mt-0">🚇 難波 → 箕面萱野 (御堂筋直達)<br>🚕 轉計程車 (¥3500)</div>
-                        <div class="flex gap-4 mb-2 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">10:20</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">勝尾寺 (達摩)</h4><p class="text-card-body text-gray-500 mt-1">求勝運 💪</p></div><a href="https://www.google.com/maps/search/?api=1&query=Katsuoji+Temple" target="_blank" class="nav-arrow"><i class="fa-solid fa-location-arrow"></i></a></div>
-                        </div>
-                        <div class="transport-text">🚕 計程車 → 箕面瀑布 (7分 ¥1500)</div>
-                        <div class="flex gap-4 mb-2 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">12:30</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center">
-                                <div><h4 class="text-card-title font-bold text-coffee-text">箕面瀑布 & 咖啡</h4><p class="text-card-body text-gray-500 mt-1">山本咖啡館</p></div>
-                                <div class="flex gap-2"><a href="https://maps.app.goo.gl/nwP1iehyda93aPrb8" target="_blank" class="nav-arrow w-8 h-8 text-[10px]">瀑</a><a href="https://maps.app.goo.gl/jRJDLSgmqwNWeY1D9" target="_blank" class="nav-arrow w-8 h-8 text-[10px]">咖</a></div>
-                            </div>
-                        </div>
-                        <div class="transport-text">🚶 走回箕面站 (40分) <br> 🚃 箕面→石橋→梅田 (¥280)</div>
-                        <div class="flex gap-4 mb-6 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">16:00</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1">
-                                <a href="https://www.google.com/maps/search/?api=1&query=Onigiri+Gorichan+Nakazakicho" target="_blank" class="shop-btn"><span class="font-bold text-coffee-text">🍙 ONIGIRI GORICHAN</span><i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i></a>
-                                <a href="https://www.google.com/maps/search/?api=1&query=OSA+COFFEE+Osaka" target="_blank" class="shop-btn"><span class="font-bold text-coffee-text">☕ OSA COFFEE</span><i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i></a>
-                                <a href="https://www.google.com/maps/search/?api=1&query=Neel+Nakazakicho" target="_blank" class="shop-btn"><span class="font-bold text-coffee-text">🍐 NEEL (洋梨塔)</span><i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i></a>
-                                <a href="https://www.google.com/maps/search/?api=1&query=Grenier+Umeda" target="_blank" class="shop-btn"><span class="font-bold text-coffee-text">🍪 GRENIER (烤布蕾)</span><i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i></a>
-                            </div>
-                        </div>
-                        <div class="flex gap-4 mb-2 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">21:00</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center">
-                                <div><h4 class="text-card-title font-bold text-coffee-text">Grilled Yakitori Tokoha</h4></div>
-                                <a href="https://maps.app.goo.gl/o55SXECsH4qNS5TJA" target="_blank" class="nav-arrow"><i class="fa-solid fa-utensils"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex justify-center mt-6"><a href="https://www.google.com/maps/search/?api=1&query=Hotel+Abitare+Namba+West" target="_blank" class="btn-hotel"><i class="fa-solid fa-bed"></i> 返回飯店</a></div>
-                </div>
-
-                <div id="day-4" class="day-container mb-12">
-                    <div class="day-header">
-                        <div><span class="bg-coffee-text text-white text-[10px] font-bold px-2 py-1 rounded">DAY 4</span><span class="text-[18px] font-bold text-coffee-text ml-2">12/12 (五) 天橋立</span></div>
-                    </div>
-                    <div class="relative">
-                        <div class="timeline-line-vertical"></div>
-                        <div class="weather-capsule bg-weather-cold text-blue-800 border border-blue-100"><i class="fa-solid fa-cloud-showers-heavy text-blue-400 mr-2"></i><span>有雨寒冷 9°C</span></div>
-
-                        <div class="transport-text !mt-0"><span class="text-coffee-text font-bold mr-2">07:51</span> 櫻川→西九條<br>「阪神難波線快速急行」¥220</div>
-                        <div class="transport-text"><span class="text-coffee-text font-bold mr-2">08:01</span> 西九條→大阪<br>JR大阪環狀線</div>
-                        <div class="transport-text"><span class="text-red-700 font-bold mr-2">08:14</span> 大阪站 → 福知山站<br>（JR特急 Kounotori）<span class="text-red-500 font-bold bg-red-50 px-1 rounded text-xs ml-1">必劃位</span></div>
-                        <div class="transport-text"><span class="text-red-700 font-bold mr-2">09:59</span> 福知山站 → 10:40天橋立站<br>（JR特急 Hashidate）<span class="text-red-500 font-bold bg-red-50 px-1 rounded text-xs ml-1">必劃位</span></div>
-
-                        <div class="flex gap-4 mb-2 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">11:00</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center">
-                                <div><h4 class="text-card-title font-bold text-coffee-text">天橋立觀光船 → 一宮</h4><p class="text-card-body text-gray-500 mt-1">11:00 - 11:12</p></div>
-                                <a href="https://maps.app.goo.gl/b5STE6kvvpKKBzYb9" target="_blank" class="nav-arrow"><i class="fa-solid fa-ship"></i></a>
-                            </div>
-                        </div>
-                        <div class="transport-text">
-                            <span class="font-bold mr-2">11:24</span> 【丹海巴士】<br>天橋立元伊勢籠神社→伊根
-                            <a href="https://www.google.com/maps/search/元伊勢籠神社" target="_blank" class="ml-2 text-blue-500"><i class="fa-solid fa-map-pin"></i> 站牌</a>
-                        </div>
-                        <div class="flex gap-4 mb-2 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">12:00</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center">
-                                <div>
-                                    <h4 class="text-card-title font-bold text-coffee-text">伊根舟屋食堂</h4>
-                                    <p class="text-card-body text-gray-500 mt-1">推薦：INE CAFE / 舟屋散策</p>
-                                </div>
-                                <a href="https://maps.app.goo.gl/eFec6NBgDwn6GZeP8" target="_blank" class="nav-arrow"><i class="fa-solid fa-utensils"></i></a>
-                            </div>
-                        </div>
-                        <div class="transport-text">
-                            <span class="font-bold mr-2">13:33</span> 【丹海巴士】<br>伊根→伊根灣巡游觀光船日出站
-                            <a href="https://www.google.com/maps/search/伊根湾めぐり・日出" target="_blank" class="ml-2 text-blue-500"><i class="fa-solid fa-map-pin"></i> 站牌</a>
-                        </div>
-                        <div class="flex gap-4 mb-2 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">14:00</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card"><h4 class="text-card-title font-bold text-coffee-text">伊根觀光船餵海鷗</h4></div>
-                        </div>
-                        <div class="transport-text">
-                            <span class="font-bold mr-2">14:46</span> 【丹海巴士】<br>日出站→天橋立纜車
-                            <a href="https://www.google.com/maps/search/伊根湾めぐり・日出" target="_blank" class="ml-2 text-blue-500"><i class="fa-solid fa-map-pin"></i> 站牌</a>
-                        </div>
-                        <div class="flex gap-4 mb-2 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">15:13</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">傘松公園纜車</h4><p class="text-card-body text-gray-500 mt-1">股觀 (看龍飛升)</p></div><a href="https://www.google.com/maps/search/?api=1&query=Kasamatsu+Park+Cable+Car" target="_blank" class="nav-arrow"><i class="fa-solid fa-mountain-sun"></i></a></div>
-                        </div>
-                        <div class="transport-text">16:15 一宮棧橋(傘松公園)➔天橋立棧橋
-                             <a href="https://www.google.com/maps/search/天橋立観光船+一の宮駅" target="_blank" class="ml-2 text-blue-500"><i class="fa-solid fa-map-pin"></i> 棧橋</a>
-                        </div>
-                        <div class="flex gap-4 mb-2 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">16:27</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card">
-                                <h4 class="text-card-title font-bold text-coffee-text">天橋立車站</h4>
-                                <p class="text-card-body text-gray-500 mt-1">推薦：智恩寺、吃智慧之餅</p>
-                            </div>
-                            <a href="https://www.google.com/maps/search/?api=1&query=Amanohashidate+Station" target="_blank" class="nav-arrow"><i class="fa-solid fa-map-pin"></i></a>
-                        </div>
-                        <div class="transport-text"><span class="text-red-700 font-bold mr-2">18:09</span> 天橋立站 → 京都站<br>（JR特急 Hashidate）<span class="text-red-500 font-bold bg-red-50 px-1 rounded text-xs ml-1">必劃位</span></div>
-                        <div class="transport-text"><span class="text-red-700 font-bold mr-2">20:30</span> 京都站 → 天王寺站<br>（JR Haruka）<span class="text-red-500 font-bold bg-red-50 px-1 rounded text-xs ml-1">必劃位</span></div>
-                        <div class="transport-text"><span class="font-bold mr-2">21:25</span> 天王寺→JR難波站<br>「關西本線／大和」</div>
-                    </div>
-                    <div class="flex justify-center mt-6"><a href="https://www.google.com/maps/search/?api=1&query=Hotel+Abitare+Namba+West" target="_blank" class="btn-hotel"><i class="fa-solid fa-bed"></i> 返回飯店</a></div>
-                </div>
-
-                <div id="day-5" class="day-container mb-12">
-                    <div class="day-header">
-                        <div><span class="bg-coffee-text text-white text-[10px] font-bold px-2 py-1 rounded">DAY 5</span><span class="text-[18px] font-bold text-coffee-text ml-2">12/13 (六) 大阪市區</span></div>
-                    </div>
-                    <div class="relative">
-                        <div class="timeline-line-vertical"></div>
-                        <div class="weather-capsule bg-weather-sunny text-orange-800 border border-orange-100"><i class="fa-solid fa-sun text-orange-400 mr-2"></i><span>晴朗 11°C</span></div>
-
-                        <div class="flex gap-4 mb-2 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">09:00</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">木津市場</h4><p class="text-card-body text-gray-500 mt-1">海鮮、水果</p></div><a href="https://www.google.com/maps/search/?api=1&query=Kizu+Wholesale+Market" target="_blank" class="nav-arrow"><i class="fa-solid fa-fish"></i></a></div>
-                        </div>
-                        <div class="flex gap-4 mb-4 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">上午</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card">
-                                <h4 class="text-card-title font-bold text-coffee-text mb-2">地標巡禮</h4>
-                                <div class="space-y-2">
-                                    <div class="flex justify-between items-center"><span class="text-[14px]">通天閣</span><a href="https://www.google.com/maps/search/?api=1&query=Tsutenkaku" target="_blank" class="text-xs text-gray-400"><i class="fa-solid fa-location-arrow"></i></a></div>
-                                    <div class="flex justify-between items-center"><span class="text-[14px]">大阪城</span><a href="https://www.google.com/maps/search/?api=1&query=Osaka+Castle" target="_blank" class="text-xs text-gray-400"><i class="fa-solid fa-location-arrow"></i></a></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-4 mb-4 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">12:30</span><div class="timeline-dot active bg-orange-400"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">okuwo shabu (預約)</h4><p class="text-card-body text-gray-500 mt-1">壽喜燒/火鍋</p></div><a href="https://www.google.com/maps/search/?api=1&query=Okuwo+Shabu" target="_blank" class="nav-arrow"><i class="fa-solid fa-utensils"></i></a></div>
-                        </div>
-                        <div class="flex gap-4 mb-4 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">下午</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">御津八幡宮 (美國村)</h4><p class="text-card-body text-gray-500 mt-1">祈求藝術/文化</p></div><a href="https://www.google.com/maps/search/?api=1&query=Mitsu+Hachimangu+Osaka" target="_blank" class="nav-arrow"><i class="fa-solid fa-torii-gate"></i></a></div>
-                        </div>
-                        <div class="flex gap-4 mb-6 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">18:00</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center"><div><h4 class="text-card-title font-bold text-coffee-text">Tonkatsu New Babe Namba</h4></div><a href="https://maps.app.goo.gl/GouzanHKoa5ZxuUu5" target="_blank" class="nav-arrow"><i class="fa-solid fa-utensils"></i></a></div>
-                        </div>
-                    </div>
-                    <div class="flex justify-center mt-6"><a href="https://www.google.com/maps/search/?api=1&query=Hotel+Abitare+Namba+West" target="_blank" class="btn-hotel"><i class="fa-solid fa-bed"></i> 返回飯店</a></div>
-                </div>
-
-                <div id="day-6" class="day-container mb-12">
-                    <div class="day-header">
-                        <div><span class="bg-coffee-text text-white text-[10px] font-bold px-2 py-1 rounded">DAY 6</span><span class="text-[18px] font-bold text-coffee-text ml-2">12/14 (日) 返程</span></div>
-                    </div>
-                    <div class="relative">
-                        <div class="timeline-line-vertical"></div>
-                        <div class="weather-capsule bg-weather-cloudy text-gray-700 border border-gray-200"><i class="fa-solid fa-cloud text-gray-400 mr-2"></i><span>多雲 10°C</span></div>
-
-                        <div class="flex gap-4 mb-2 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">09:30</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card"><h4 class="text-card-title font-bold text-coffee-text">飯店退房</h4></div>
-                        </div>
-                        <div class="transport-text"><span class="font-bold mr-2">09:45</span> 🚃 JR難波 → 天王寺</div>
-                        <div class="transport-text"><span class="text-red-700 font-bold mr-2">10:00</span> 🚄 天王寺 → 關西機場 (Haruka 需劃位)</div>
-                        <div class="flex gap-4 mb-2 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-gray-400 mb-1">10:50</span><div class="timeline-dot"></div></div>
-                            <div class="flex-1 creamy-card flex justify-between items-center">
-                                <div><h4 class="text-card-title font-bold text-coffee-text">抵達關西機場 (KIX)</h4><p class="text-card-body text-gray-500 mt-1">4F 國際出發 / 3F 購物</p></div>
-                                <a href="https://goo.gl/maps/KansaiAirport" target="_blank" class="nav-arrow"><i class="fa-solid fa-map-pin"></i></a>
-                            </div>
-                        </div>
-                        <div class="flex gap-4 mb-6 relative">
-                            <div class="w-10 flex flex-col items-center pt-4 z-10"><span class="text-[12px] font-bold text-green-600 mb-1">12:55</span><div class="timeline-dot active bg-green-500"></div></div>
-                            <div class="flex-1 creamy-card">
-                                <h4 class="text-card-title font-bold text-coffee-text">BR131 起飛 ✈️</h4>
-                                <p class="text-card-body text-gray-500 mt-1">KIX (12:55) ➔ TPE (15:05)</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="page-accounting" class="view-section">
-            <h2 class="text-2xl font-bold text-coffee-text mb-6 pl-2 pt-2">記帳管理 💰</h2>
-            
-            <div class="bg-white text-coffee-text border border-latte-light rounded-2xl p-6 shadow-card mb-6 w-full max-w-full">
-                <p class="text-sm text-gray-400 mb-1">總支出 (JPY)</p>
-                <div class="text-4xl font-bold mb-2 tracking-wider" id="total-amount">¥0</div>
-                <p class="text-xs text-gray-500">約合 TWD <span id="total-twd">0</span></p>
-            </div>
-            
-            <div class="bg-white rounded-2xl p-4 shadow-card mb-6 w-full max-w-full">
-                <div class="flex gap-3 mb-3">
-                    <div class="w-[35%] flex-shrink-0">
-                        <select id="expense-category" class="w-full bg-gray-50 rounded-lg text-sm px-2 py-3 outline-none border border-gray-100">
-                            <option value="飲食">🍴 飲食</option><option value="交通">🚃 交通</option><option value="購物">🛍️ 購物</option><option value="門票">🎫 門票</option><option value="住宿">🏠 住宿</option><option value="伴手禮">🎁 伴手禮</option><option value="零食">🍦 零食</option><option value="其他">📄 其他</option>
-                        </select>
-                    </div>
-                    <div class="flex-1">
-                        <input type="number" id="expense-price" placeholder="金額 (JPY)" class="w-full bg-gray-50 rounded-lg px-3 py-3 text-sm outline-none border border-gray-100">
-                    </div>
-                </div>
-                <div class="flex gap-3">
-                    <div class="flex-1">
-                        <input type="text" id="expense-name" placeholder="品項名稱" class="w-full bg-gray-50 rounded-lg px-3 py-3 text-sm outline-none border border-gray-100">
-                    </div>
-                    <button onclick="addExpense()" class="bg-coffee-text text-white w-20 rounded-lg text-sm font-bold active:scale-95 transition-transform flex-none">新增</button>
-                </div>
-            </div>
-            <ul id="expense-list" class="space-y-3 w-full pb-20"></ul>
-        </div>
-
-        <div id="page-shopping" class="view-section">
-            <div class="flex justify-between items-center mb-6 w-full pt-2 px-1">
-                <h2 class="text-2xl font-bold text-coffee-text">代買清單 🛍️</h2>
-                <button onclick="openModal()" class="bg-coffee-text text-white w-10 h-10 rounded-full shadow-lg text-xl flex items-center justify-center"><i class="fa-solid fa-plus"></i></button>
-            </div>
-            <div id="shop-grid" class="grid grid-cols-2 gap-4 pb-24 w-full"></div>
-        </div>
-
-        <div id="page-info" class="view-section">
-            <h2 class="text-2xl font-bold text-coffee-text mb-6 pl-2 pt-2">資訊 & 工具 ℹ️</h2>
-            
-            <div class="bg-white rounded-2xl p-5 shadow-card border-l-4 border-green-500 mb-6 w-full">
-                <h3 class="text-sm font-bold text-green-700 mb-4"><i class="fa-solid fa-money-bill-transfer mr-2"></i>即時匯率換算</h3>
-                <div class="flex items-center gap-2 mb-2">
-                    <input type="number" id="conv-jpy" oninput="convertCurrency('jpy')" placeholder="JPY" class="w-full bg-gray-50 p-3 rounded-lg font-bold text-coffee-text outline-none border border-gray-100">
-                    <i class="fa-solid fa-right-left text-gray-300"></i>
-                    <input type="number" id="conv-twd" oninput="convertCurrency('twd')" placeholder="TWD" class="w-full bg-gray-50 p-3 rounded-lg font-bold text-coffee-text outline-none border border-gray-100">
-                </div>
-                <p class="text-[10px] text-gray-400 text-right">匯率: 0.215</p>
-            </div>
-
-            <div class="w-full mb-20">
-                <h3 class="text-sm font-bold text-latte-primary mb-4 ml-1">常用 APP</h3>
-                <div class="app-circle-grid">
-                    <a href="uber://" class="app-link-item">
-                        <div class="app-icon-circle text-black"><i class="fa-brands fa-uber"></i></div>
-                        <span class="app-label">Uber</span>
-                    </a>
-                    <a href="http://maps.google.com" class="app-link-item">
-                        <div class="app-icon-circle text-green-600"><i class="fa-solid fa-map-location-dot"></i></div>
-                        <span class="app-label">Maps</span>
-                    </a>
-                    <a href="translate://" class="app-link-item">
-                        <div class="app-icon-circle text-blue-500"><i class="fa-solid fa-language"></i></div>
-                        <span class="app-label">翻譯</span>
-                    </a>
-                    <a href="https://japantravel.navitime.com/en/area/jp/route/" class="app-link-item">
-                        <div class="app-icon-circle text-red-500"><i class="fa-solid fa-train-subway"></i></div>
-                        <span class="app-label">乘換案內</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-    <div id="shop-modal" class="modal">
-        <div class="bg-white rounded-2xl p-6 w-[85%] max-w-sm shadow-2xl">
-            <h3 class="text-lg font-bold text-coffee-text mb-4">新增物品</h3>
-            <input type="text" id="shop-name" placeholder="商品名稱" class="w-full bg-gray-50 p-3 rounded-lg mb-3 border border-gray-100 outline-none">
-            <input type="text" id="shop-desc" placeholder="規格/價格" class="w-full bg-gray-50 p-3 rounded-lg mb-3 border border-gray-100 outline-none">
-            <div class="mb-4">
-                <label class="block text-xs text-gray-400 mb-2">圖片 (選填)</label>
-                <input type="file" id="shop-file" accept="image/*" class="text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-xs file:bg-latte-light file:text-coffee-text">
-            </div>
-            <div class="flex gap-2">
-                <button onclick="closeModal()" class="flex-1 py-2 rounded-lg bg-gray-100 text-gray-500 font-bold">取消</button>
-                <button onclick="saveShopItem()" class="flex-1 py-2 rounded-lg bg-coffee-text text-white font-bold">儲存</button>
             </div>
         </div>
     </div>
 
+    <main class="max-w-6xl mx-auto p-4">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
+                <div class="day-header-special p-3 text-white text-center">
+                    <div class="font-bold">12/9 (二)</div>
+                    <div class="text-xs opacity-90">抵達、放行李、LIM 染髮</div>
+                </div>
+                <div class="p-4 flex-1 space-y-4 text-sm">
+                    <div class="flex items-center justify-between border-b pb-2">
+                        <div class="text-blue-800 font-bold"><i class="fas fa-plane mr-1"></i> BR178</div>
+                        <div class="text-gray-600 text-xs">06:30 TPE <i class="fas fa-arrow-right mx-1"></i> <span class="font-bold text-black">09:55 KIX</span></div>
+                    </div>
+
+                    <div class="bg-orange-50 border-l-4 border-orange-400 p-3 rounded-r text-xs">
+                        <div class="font-bold text-orange-800 mb-1"><i class="fas fa-walking mr-1"></i>機場 ⮕ 南海電鐵攻略</div>
+                        <ol class="list-decimal list-inside space-y-1 text-orange-900">
+                            <li>拿完行李(1F)，找「鐵道 Railways」指標</li>
+                            <li>搭手扶梯/電梯上 <strong>2樓</strong></li>
+                            <li>走過空橋到對面「關西空港站」</li>
+                            <li>找 <span class="font-bold text-red-600">橘色/紅色</span> 的南海改札口 (藍色是JR別走錯)</li>
+                        </ol>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center bg-gray-100 p-2 rounded">
+                            <div>
+                                <i class="fas fa-train text-blue-600 mr-1"></i> 
+                                <span class="font-bold">南海特急 Rapi:t</span>
+                            </div>
+                            <div class="text-right text-xs">
+                                <div class="font-bold">推薦 11:05 或 11:35 發</div>
+                                <div class="text-gray-500">往難波 (約38分)</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start text-gray-700 text-xs mt-2 ml-1">
+                            <i class="fas fa-hotel mt-0.5 mr-2 text-indigo-500"></i>
+                            <div>
+                                <span class="font-bold block">Hotel Abitare Namba West</span>
+                                <span>難波站步行前往寄放行李 (約15分)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-pink-50 border-l-4 border-pink-400 p-2 mt-2">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-pink-800">LIM 染髮</span>
+                            <span class="tag-time">13:30</span>
+                        </div>
+                        <div class="text-xs text-pink-600 mt-1">
+                            <i class="fas fa-check-circle mr-1"></i>行李已放好，從容前往
+                        </div>
+                    </div>
+
+                    <div class="text-gray-700 pt-2 border-t">
+                        <i class="fas fa-shopping-bag text-orange-400 w-4"></i> 晚上：難波車站周邊逛街
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
+                <div class="day-header p-3 text-white text-center">
+                    <div class="font-bold">12/10 (三)</div>
+                    <div class="text-xs opacity-90">大阪環球影城 USJ</div>
+                </div>
+                <div class="p-4 flex-1 space-y-4 text-sm">
+                    <div class="flex items-start">
+                        <i class="fas fa-map-marker-alt mt-1 mr-2 text-blue-500"></i>
+                        <div><span class="font-bold text-lg text-blue-800 block mb-1">大阪環球影城</span></div>
+                    </div>
+                    <div class="highlight-box">
+                        <div class="font-bold mb-1 text-slate-700"><i class="fas fa-train mr-1"></i>交通</div>
+                        <ul class="list-disc list-inside text-slate-600 text-xs space-y-1">
+                            <li>櫻川站 3號出口【阪神難波線】</li>
+                            <li>↓ 西九條車站 2號出口 (¥220)</li>
+                            <li>↓ JR夢咲線【櫻島】</li>
+                            <li>環球城</li>
+                        </ul>
+                    </div>
+                    <div class="border-t pt-2 flex justify-between items-center">
+                        <span class="font-bold text-gray-700">晚餐</span>
+                        <span class="tag-food">sazare 大阪燒</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
+                <div class="day-header p-3 text-white text-center">
+                    <div class="font-bold">12/11 (四)</div>
+                    <div class="text-xs opacity-90">勝尾寺、箕面瀑布</div>
+                </div>
+                <div class="p-4 flex-1 space-y-4 text-sm">
+                    <div><span class="tag-time">09:30</span> <span class="font-bold">前往勝尾寺</span></div>
+                    <div><span class="font-bold text-blue-800">勝尾寺</span> <span class="text-xs text-gray-500">→ 箕面瀑布 (計程車7分)</span></div>
+                    <div>
+                        <span class="font-bold text-blue-800">箕面瀑布</span>
+                        <div class="mt-1"><span class="tag-food">山本咖啡館</span></div>
+                    </div>
+                    <div class="highlight-box">
+                        <div class="font-bold mb-1 text-slate-700 text-xs">返回梅田 (¥280/32分)</div>
+                        <div class="text-xs text-slate-600">箕面站 → 石橋阪大前 → 大阪梅田</div>
+                    </div>
+                    <div class="space-y-1 border-t pt-2">
+                        <div class="flex flex-wrap gap-1">
+                            <span class="bg-purple-100 text-purple-800 px-1 py-0.5 rounded text-[10px]">ONIGIRI GORICHAN</span>
+                            <span class="bg-purple-100 text-purple-800 px-1 py-0.5 rounded text-[10px]">OSA+NEEL</span>
+                        </div>
+                        <div class="flex justify-between items-center mt-1">
+                            <span class="font-bold text-gray-700">晚餐</span>
+                            <span class="tag-food">yakitori 居酒屋 21:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
+                <div class="day-header p-3 text-white text-center">
+                    <div class="font-bold">12/12 (五)</div>
+                    <div class="text-xs opacity-90">天橋立、伊根舟屋</div>
+                </div>
+                <div class="p-4 flex-1 space-y-3 text-sm">
+                    <ul class="space-y-3 relative border-l-2 border-blue-200 ml-2 pl-4">
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-blue-500 rounded-full"></span>
+                            <div class="font-bold">天橋立觀光船</div>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-pink-500 rounded-full"></span>
+                            <div class="font-bold text-pink-700">伊根午餐、逛逛</div>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-blue-500 rounded-full"></span>
+                            <div class="font-bold">伊根灣巡遊觀光船</div>
+                            <div class="text-xs text-gray-500">餵海鷗</div>
+                        </li>
+                        <li class="relative">
+                            <span class="absolute -left-[21px] top-1 w-3 h-3 bg-blue-500 rounded-full"></span>
+                            <div class="font-bold">傘松公園纜車</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
+                <div class="day-header p-3 text-white text-center">
+                    <div class="font-bold">12/13 (六)</div>
+                    <div class="text-xs opacity-90">木津市場、通天閣</div>
+                </div>
+                <div class="p-4 flex-1 space-y-4 text-sm">
+                    <div class="font-bold text-lg text-blue-800">木津市場</div>
+                    <div class="flex justify-between items-center text-red-700 border-b pb-2">
+                        <span class="font-bold">okuwo shabu</span>
+                        <span class="font-bold text-lg">12:30</span>
+                    </div>
+                    <div class="space-y-1 text-gray-700">
+                        <div><i class="fas fa-map-pin text-blue-400 w-4"></i> 心齋橋 / 道頓堀</div>
+                    </div>
+                    <div class="bg-orange-100 p-2 rounded-lg mt-2">
+                        <div class="text-orange-800 font-bold flex justify-between text-xs">
+                            <span>new babe 炸豬排</span>
+                            <span>18:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
+                <div class="day-header-special p-3 text-white text-center">
+                    <div class="font-bold">12/14 (日)</div>
+                    <div class="text-xs opacity-90">返程</div>
+                </div>
+                <div class="p-4 flex-1 space-y-4 text-sm flex flex-col justify-center">
+                    <div class="text-center text-gray-600 mb-2">
+                        <i class="fas fa-suitcase-rolling text-4xl mb-2 text-gray-300"></i>
+                        <p>整理行李、前往機場</p>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded p-3">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="text-blue-900 font-bold text-lg"><i class="fas fa-plane-departure mr-1"></i> BR131</div>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-700 font-bold">
+                            <div>12:55 KIX</div>
+                            <i class="fas fa-long-arrow-alt-right text-gray-400"></i>
+                            <div>15:05 TPE</div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-2 text-center">
+                            Goodbye Osaka!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 shadow-sm text-sm">
+            <h3 class="font-bold text-amber-800 mb-2"><i class="fas fa-ticket-alt mr-2"></i>票券備忘錄</h3>
+            <p class="text-gray-700">JR廣域周遊5日券 + 天橋立/伊根2日券 ($2500)</p>
+            <p class="text-gray-500 text-xs mt-1">兌換：天橋立站內「天橋立觀光協會中心」或「丹後海陸交通櫃台」</p>
+        </div>
+
+    </main>
+
     <script>
-        function showItinerary(dayId) {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            document.getElementById('page-itinerary').classList.add('active');
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-func').forEach(t => t.classList.remove('active'));
-            document.getElementById('tab-all').classList.add('active');
-            document.querySelector('.main-content').scrollTo(0,0);
+        function convertCurrency() {
+            const rate = document.getElementById('rateInput').value;
+            const jpy = document.getElementById('jpyInput').value;
+            const twd = (jpy * rate).toFixed(0);
+            document.getElementById('twdOutput').innerText = '$ ' + twd;
         }
-
-        function scrollToDay(dayId) {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            document.getElementById('page-itinerary').classList.add('active');
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-func').forEach(t => t.classList.remove('active'));
-            document.getElementById('tab-' + dayId).classList.add('active');
-            const target = document.getElementById(dayId);
-            if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        function switchPage(pageId) {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-func').forEach(t => t.classList.remove('active'));
-            const activeNav = document.getElementById('nav-' + pageId.replace('page-',''));
-            if(activeNav) activeNav.classList.add('active');
-            document.querySelector('.main-content').scrollTo(0,0);
-        }
-
-        function toggleCollapse(id) {
-            const el = document.getElementById(id);
-            el.classList.toggle('open');
-            document.getElementById(id+'-icon').style.transform = el.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
-        }
-
-        function openModal() { document.getElementById('shop-modal').classList.add('show'); }
-        function closeModal() { document.getElementById('shop-modal').classList.remove('show'); }
-
-        const RATE = 0.215;
-        let expenses = JSON.parse(localStorage.getItem('osakaTripExpensesV7')) || [];
-        function renderExpenses() {
-            const list = document.getElementById('expense-list');
-            const totalEl = document.getElementById('total-amount');
-            const totalTwdEl = document.getElementById('total-twd');
-            list.innerHTML = '';
-            let total = 0;
-            expenses.slice().reverse().forEach((item, index) => {
-                total += parseInt(item.amount);
-                const li = document.createElement('li');
-                li.className = 'bg-white p-3 rounded-lg border border-gray-100 flex justify-between items-center text-sm shadow-sm';
-                li.innerHTML = `<div class="flex items-center truncate"><span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded mr-2">${item.category}</span><span class="text-coffee-text truncate">${item.name}</span></div><div class="flex items-center flex-shrink-0 ml-2"><span class="font-bold text-coffee-text mr-3">¥${item.amount}</span><button onclick="deleteExpense(${expenses.length - 1 - index})" class="text-gray-300 hover:text-red-400"><i class="fa-solid fa-trash-can"></i></button></div>`;
-                list.appendChild(li);
-            });
-            totalEl.innerText = `¥${total}`; totalTwdEl.innerText = Math.round(total * RATE);
-            localStorage.setItem('osakaTripExpensesV7', JSON.stringify(expenses));
-        }
-        function addExpense() {
-            const name = document.getElementById('expense-name').value;
-            const amount = document.getElementById('expense-price').value;
-            const category = document.getElementById('expense-category').value;
-            if(name && amount) { expenses.push({ name, amount, category }); document.getElementById('expense-name').value = ''; document.getElementById('expense-price').value = ''; renderExpenses(); }
-        }
-        function deleteExpense(index) { if(confirm('刪除？')) { expenses.splice(index, 1); renderExpenses(); } }
-        renderExpenses();
-
-        let shopList = JSON.parse(localStorage.getItem('osakaShopListV7')) || [];
-        function renderShopList() {
-            const grid = document.getElementById('shop-grid');
-            grid.innerHTML = '';
-            shopList.forEach((item, idx) => {
-                const div = document.createElement('div');
-                div.className = 'shop-item bg-white rounded-xl shadow-sm border border-gray-100 p-3';
-                const imgHTML = item.img ? `<div class="shop-img-box mb-3"><img src="${item.img}" class="shop-img"></div>` : `<div class="shop-img-box mb-3 flex items-center justify-center text-gray-300 bg-gray-50"><i class="fa-solid fa-image text-2xl"></i></div>`;
-                div.innerHTML = `${imgHTML}<div class="font-bold text-coffee-text text-sm truncate">${item.name}</div><div class="text-xs text-gray-400 mb-2 truncate">${item.desc}</div><button onclick="deleteShopItem(${idx})" class="w-full py-1.5 bg-gray-50 text-gray-400 text-xs rounded hover:bg-red-50 hover:text-red-400 transition-colors"><i class="fa-solid fa-trash-can"></i></button>`;
-                grid.appendChild(div);
-            });
-            localStorage.setItem('osakaShopListV7', JSON.stringify(shopList));
-        }
-        function saveShopItem() {
-            const name = document.getElementById('shop-name').value;
-            const desc = document.getElementById('shop-desc').value;
-            const fileInput = document.getElementById('shop-file');
-            if(!name) return;
-            if(fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) { shopList.push({ name, desc, img: e.target.result }); closeModal(); renderShopList(); }
-                reader.readAsDataURL(fileInput.files[0]);
-            } else { shopList.push({ name, desc, img: null }); closeModal(); renderShopList(); }
-        }
-        function deleteShopItem(idx) { if(confirm('刪除？')) { shopList.splice(idx, 1); renderShopList(); } }
-        renderShopList();
-
-        function convertCurrency(type) {
-            const jpyInput = document.getElementById('conv-jpy');
-            const twdInput = document.getElementById('conv-twd');
-            if(type === 'jpy') { twdInput.value = Math.round(jpyInput.value * RATE); } else { jpyInput.value = Math.round(twdInput.value / RATE); }
+        function updateConverter() {
+            convertCurrency();
         }
     </script>
 </body>
